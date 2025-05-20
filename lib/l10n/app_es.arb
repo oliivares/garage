@@ -1,0 +1,20 @@
+{
+  "account": "Cuenta",
+  "personalData": "Datos personales",
+  "logout": "Cerrar sesión",
+  "language": "Idioma",
+  "spanish": "Español",
+  "english": "Inglés",
+  "vehiclesTitle": "Vehículos",
+  "vehiclesLoadError": "Error al cargar vehículos.",
+  "vehiclesEmpty": "Aún no tienes vehículos añadidos.",
+  "vehiclesAdd": "Añadir vehículo",
+  "vehicleAddedSuccessfully": "Vehiculo agregado correctamente",
+  "saveVehicle": "Guardar vehiculo",
+  "selectAnyo": "Seleccione el año",
+  "year": "Año",
+  "enterTheMotor": "Ingrese el motor",
+  "selectThePower": "Seleccione la potencia",
+  "enterTheBrand": "Ingrese la marca",
+  "enterTheTuition": "Ingrese la matricula"
+}

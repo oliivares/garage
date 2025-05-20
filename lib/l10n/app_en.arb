@@ -1,0 +1,20 @@
+{
+  "account": "Account",
+  "personalData": "Personal Data",
+  "logout": "Logout",
+  "language": "Language",
+  "spanish": "Spanish",
+  "english": "English",
+  "vehiclesTitle": "Vehicles",
+  "vehiclesLoadError": "Failed to load vehicles.",
+  "vehiclesEmpty": "You haven't added any vehicles yet.",
+  "vehiclesAdd": "Add Vehicle",
+  "vehicleAddedSuccessfully": "Vehicle Added Successfully",
+  "saveVehicle": "Save Vehicle",
+  "selectAnyo": "Select Year",
+  "year": "Year",
+  "enterTheMotor": "Enter the motor",
+  "selectThePower": "Select the power",
+  "enterTheBrand": "Enter the brand",
+  "enterTheTuition": "Enter the tuition"
+}
