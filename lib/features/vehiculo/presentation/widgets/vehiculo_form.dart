@@ -127,7 +127,9 @@ class _VehiculoFormState extends State<VehiculoForm> {
             ),
           TextFormField(
             controller: _matriculaController,
-            decoration: const InputDecoration(labelText: "Matrícula"),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.licensePlate,
+            ),
             validator:
                 (value) =>
                     value!.isEmpty
@@ -136,7 +138,9 @@ class _VehiculoFormState extends State<VehiculoForm> {
           ),
           TextFormField(
             controller: _marcaController,
-            decoration: const InputDecoration(labelText: "Marca"),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.brand,
+            ),
             validator:
                 (value) =>
                     value!.isEmpty
@@ -145,7 +149,9 @@ class _VehiculoFormState extends State<VehiculoForm> {
           ),
           DropdownButtonFormField<int>(
             value: _selectedPotencia,
-            decoration: const InputDecoration(labelText: "Potencia (CV)"),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.power,
+            ),
             items:
                 potenciaOptions.map((cv) {
                   String label =
@@ -174,7 +180,9 @@ class _VehiculoFormState extends State<VehiculoForm> {
           ),
           TextFormField(
             controller: _motorController,
-            decoration: const InputDecoration(labelText: "Motor"),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.motor,
+            ),
             validator:
                 (value) =>
                     value!.isEmpty
@@ -183,7 +191,9 @@ class _VehiculoFormState extends State<VehiculoForm> {
           ),
           DropdownButtonFormField<int>(
             value: _selectedAnyo,
-            decoration: const InputDecoration(labelText: "Año"),
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context)!.year,
+            ),
             items: List.generate(DateTime.now().year - 1998, (index) {
               int year = 1999 + index;
               return DropdownMenuItem(

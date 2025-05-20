@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VehiculoDetalleDialog extends StatelessWidget {
   final VehiculoDetalleLogic logic;
@@ -21,7 +22,7 @@ class VehiculoDetalleDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final detalles = logic.obtenerDetalles();
+    final detalles = logic.obtenerDetalles(context);
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -37,8 +38,8 @@ class VehiculoDetalleDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  "Detalles del Vehículo",
+                Text(
+                  AppLocalizations.of(context)!.vehicleDetails,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 IconButton(
@@ -48,8 +49,6 @@ class VehiculoDetalleDialog extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-
-            // Detalles en una lista desplazable
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -79,7 +78,7 @@ class VehiculoDetalleDialog extends StatelessWidget {
                   }
                 },
                 icon: const Icon(Icons.edit),
-                label: const Text("Editar"),
+                label: Text(AppLocalizations.of(context)!.edits),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepOrange,
                   foregroundColor: Colors.white,
@@ -102,13 +101,28 @@ class VehiculoDetalleLogic {
 
   VehiculoDetalleLogic(this.vehiculo);
 
-  List<Map<String, String>> obtenerDetalles() {
+  List<Map<String, String>> obtenerDetalles(BuildContext context) {
     return [
-      {"label": "Matrícula", "value": vehiculo["matricula"].toString()},
-      {"label": "Marca", "value": vehiculo["marca"].toString()},
-      {"label": "Motor", "value": vehiculo["motor"].toString()},
-      {"label": "Potencia", "value": "${vehiculo["potencia"]} CV"},
-      {"label": "Año", "value": vehiculo["anyo"].toString()},
+      {
+        "label": AppLocalizations.of(context)!.licensePlate,
+        "value": vehiculo["matricula"].toString(),
+      },
+      {
+        "label": AppLocalizations.of(context)!.brand,
+        "value": vehiculo["marca"].toString(),
+      },
+      {
+        "label": AppLocalizations.of(context)!.motor,
+        "value": vehiculo["motor"].toString(),
+      },
+      {
+        "label": AppLocalizations.of(context)!.power,
+        "value": "${vehiculo["potencia"]} CV",
+      },
+      {
+        "label": AppLocalizations.of(context)!.year,
+        "value": vehiculo["anyo"].toString(),
+      },
     ];
   }
 }

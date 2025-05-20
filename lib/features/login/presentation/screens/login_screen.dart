@@ -2,6 +2,7 @@ import 'package:app_garagex/features/login/presentation/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/features/navegacion/navegacion_screen.dart';
 import 'package:app_garagex/features/register/presentation/screens/register_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -69,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: _usuarioController,
                 decoration: InputDecoration(
-                  labelText: "Nombre de usuario",
+                  labelText: AppLocalizations.of(context)!.userName,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -81,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _passwordController,
                 obscureText: !_showPassword,
                 decoration: InputDecoration(
-                  labelText: "Contraseña",
+                  labelText: AppLocalizations.of(context)!.password,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -108,8 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (_) => const RegisterScreen()),
                     );
                   },
-                  child: const Text(
-                    "Crear cuenta",
+                  child: Text(
+                    AppLocalizations.of(context)!.createAccount,
                     style: TextStyle(color: Colors.deepOrange),
                   ),
                 ),
@@ -128,8 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child:
                       _isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text(
-                            "Iniciar sesión",
+                          : Text(
+                            AppLocalizations.of(context)!.startSession,
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.deepOrange,

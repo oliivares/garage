@@ -2,6 +2,7 @@ import 'package:app_garagex/features/register/presentation/bloc/register_bloc.da
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app_garagex/features/login/presentation/screens/login_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -85,7 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Scaffold(
         backgroundColor: const Color(0xFFF5F6FA),
         appBar: AppBar(
-          title: const Text("Crear cuenta"),
+          title: Text(AppLocalizations.of(context)!.createAccount),
           backgroundColor: Colors.deepOrangeAccent,
         ),
         body: SingleChildScrollView(
@@ -96,7 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextField(
                 controller: _nameController,
                 decoration: _inputDecoration(
-                  label: "Nombre completo *",
+                  label: AppLocalizations.of(context)!.fullName,
                   prefixIcon: Icons.person,
                 ),
               ),
@@ -104,7 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextField(
                 controller: _usernameController,
                 decoration: _inputDecoration(
-                  label: "Nombre de usuario *",
+                  label: AppLocalizations.of(context)!.userName,
                   prefixIcon: Icons.account_circle,
                 ),
               ),
@@ -112,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               TextField(
                 controller: _emailController,
                 decoration: _inputDecoration(
-                  label: "Email *",
+                  label: AppLocalizations.of(context)!.email,
                   prefixIcon: Icons.email,
                 ),
               ),
@@ -122,7 +123,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 decoration: _inputDecoration(
-                  label: "Teléfono *",
+                  label: AppLocalizations.of(context)!.phone,
                   prefixIcon: Icons.phone,
                 ),
               ),
@@ -131,7 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _passwordController,
                 obscureText: !_showPassword,
                 decoration: _inputDecoration(
-                  label: "Contraseña *",
+                  label: AppLocalizations.of(context)!.password,
                   prefixIcon: Icons.lock,
                   isPassword: true,
                   isVisible: _showPassword,
@@ -145,7 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _confirmPasswordController,
                 obscureText: !_showConfirmPassword,
                 decoration: _inputDecoration(
-                  label: "Confirmar contraseña *",
+                  label: AppLocalizations.of(context)!.confirmPassword,
                   prefixIcon: Icons.lock_outline,
                   isPassword: true,
                   isVisible: _showConfirmPassword,

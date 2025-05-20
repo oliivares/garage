@@ -1,7 +1,6 @@
-// editar_vehiculo_screen.dart
-
 import 'package:app_garagex/features/vehiculo/presentation/bloc/vehiculo_mod_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditarVehiculoScreen extends StatefulWidget {
   final Map<String, dynamic> vehiculo;
@@ -35,10 +34,10 @@ class _EditarVehiculoScreenState extends State<EditarVehiculoScreen> {
 
     if (result["success"]) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("✅ Vehículo actualizado correctamente"),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.vehicleUpdated),
           backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         ),
       );
       await Future.delayed(
@@ -48,7 +47,11 @@ class _EditarVehiculoScreenState extends State<EditarVehiculoScreen> {
       Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(result["message"] ?? "Error al editar")),
+        SnackBar(
+          content: Text(
+            result["message"] ?? AppLocalizations.of(context)!.errorEditing,
+          ),
+        ),
       );
     }
   }
@@ -57,7 +60,7 @@ class _EditarVehiculoScreenState extends State<EditarVehiculoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Editar Vehículo"),
+        title: Text(AppLocalizations.of(context)!.editVehicle),
         backgroundColor: Colors.deepOrangeAccent,
       ),
       body: Padding(
@@ -69,7 +72,9 @@ class _EditarVehiculoScreenState extends State<EditarVehiculoScreen> {
               children: [
                 TextFormField(
                   controller: bloc.matriculaController,
-                  decoration: const InputDecoration(labelText: "Matrícula"),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.licensePlate,
+                  ),
                   validator:
                       (value) =>
                           value == null || value.isEmpty
@@ -78,40 +83,48 @@ class _EditarVehiculoScreenState extends State<EditarVehiculoScreen> {
                 ),
                 TextFormField(
                   controller: bloc.marcaController,
-                  decoration: const InputDecoration(labelText: "Marca"),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.brand,
+                  ),
                   validator:
                       (value) =>
                           value == null || value.isEmpty
-                              ? "Campo requerido"
+                              ? AppLocalizations.of(context)!.fieldRequired
                               : null,
                 ),
                 TextFormField(
                   controller: bloc.motorController,
-                  decoration: const InputDecoration(labelText: "Motor"),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.motor,
+                  ),
                   validator:
                       (value) =>
                           value == null || value.isEmpty
-                              ? "Campo requerido"
+                              ? AppLocalizations.of(context)!.fieldRequired
                               : null,
                 ),
                 TextFormField(
                   controller: bloc.potenciaController,
-                  decoration: const InputDecoration(labelText: "Potencia (CV)"),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.power,
+                  ),
                   keyboardType: TextInputType.number,
                   validator:
                       (value) =>
                           value == null || value.isEmpty
-                              ? "Campo requerido"
+                              ? AppLocalizations.of(context)!.fieldRequired
                               : null,
                 ),
                 TextFormField(
                   controller: bloc.anyoController,
-                  decoration: const InputDecoration(labelText: "Año"),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.year,
+                  ),
                   keyboardType: TextInputType.number,
                   validator:
                       (value) =>
                           value == null || value.isEmpty
-                              ? "Campo requerido"
+                              ? AppLocalizations.of(context)!.fieldRequired
                               : null,
                 ),
                 const SizedBox(height: 24),
@@ -120,7 +133,7 @@ class _EditarVehiculoScreenState extends State<EditarVehiculoScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepOrangeAccent,
                   ),
-                  child: const Text("Confirmar Edición"),
+                  child: Text(AppLocalizations.of(context)!.confirmEdition),
                 ),
               ],
             ),
