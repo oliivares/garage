@@ -169,12 +169,4 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
       ),
     );
   }
-
-  Widget _passwordField(String label, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      obscureText: true,
-      decoration: InputDecoration(labelText: label),
-    );
-  }
 }
