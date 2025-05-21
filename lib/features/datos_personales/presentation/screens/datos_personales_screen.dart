@@ -1,4 +1,5 @@
 import 'package:app_garagex/features/datos_personales/presentation/bloc/datos_personales_bloc.dart';
+import 'package:app_garagex/features/datos_personales/presentation/widgets/cambio_contrasena_form.dart';
 import 'package:app_garagex/features/login/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,57 +28,53 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
   }
 
   Future<void> _cambiarContrasenaDialog() async {
-    final actualController = TextEditingController();
-    final nuevaController = TextEditingController();
-    final confirmarController = TextEditingController();
-
-    final resultado = await showDialog<bool>(
+    await showDialog(
       context: context,
       builder:
-          (_) => AlertDialog(
-            title: const Text("Cambiar contraseña"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _passwordField("Contraseña actual", actualController),
-                _passwordField("Nueva contraseña", nuevaController),
-                _passwordField("Confirmar contraseña", confirmarController),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text("Cancelar"),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text("Actualizar"),
-              ),
-            ],
+          (_) => CambiarContrasenaDialog(
+            validarContrasena: controller.validarContrasenaSegura,
+            onCambiarContrasena: ({
+              required String actual,
+              required String nueva,
+              required String confirmacion,
+            }) async {
+              try {
+                final error = await controller.cambiarContrasena(
+                  actual: actual,
+                  nueva: nueva,
+                  confirmacion: confirmacion,
+                );
+
+                if (error == null) {
+                  final prefs = await SharedPreferences.getInstance();
+                  await prefs.clear();
+
+                  // Asegúrate de ejecutar la navegación DESPUÉS de cerrar el diálogo
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context); // Cierra el diálogo primero
+                  }
+
+                  // Espera al siguiente frame para evitar conflicto con el context actual
+                  Future.microtask(() {
+                    if (mounted) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (_) => const LoginScreen()),
+                        (route) => false,
+                      );
+                    }
+                  });
+                }
+
+                return error;
+              } catch (e, st) {
+                // captura cualquier excepción inesperada
+                debugPrint("🔥 Error en onCambiarContrasena: $e\n$st");
+                return "Ocurrió un error inesperado";
+              }
+            },
           ),
     );
-
-    if (resultado == true) {
-      final error = await controller.cambiarContrasena(
-        actual: actualController.text,
-        nueva: nuevaController.text,
-        confirmacion: confirmarController.text,
-      );
-
-      if (error != null) {
-        _mostrarSnack(error);
-      } else {
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.clear();
-        if (context.mounted) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (_) => const LoginScreen()),
-            (route) => false,
-          );
-        }
-      }
-    }
   }
 
   @override

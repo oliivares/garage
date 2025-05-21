@@ -54,4 +54,26 @@ class DatosPersonalesController {
     final response = await AuthService.cambiarContrasena(actual, nueva);
     return response["success"] ? null : response["message"];
   }
+
+  List<String> validarContrasenaSegura(String contrasena) {
+    List<String> errores = [];
+
+    if (contrasena.length < 7) {
+      errores.add("Debe tener al menos 7 caracteres");
+    }
+    if (!RegExp(r'[A-Z]').hasMatch(contrasena)) {
+      errores.add("Debe contener al menos una letra mayúscula");
+    }
+    if (!RegExp(r'[a-z]').hasMatch(contrasena)) {
+      errores.add("Debe contener al menos una letra minúscula");
+    }
+    if (!RegExp(r'[0-9]').hasMatch(contrasena)) {
+      errores.add("Debe contener al menos un número");
+    }
+    if (!RegExp(r'[!@#\$&*~^%()_\-+=<>?/.,:;{}[\]|]').hasMatch(contrasena)) {
+      errores.add("Debe contener al menos un símbolo");
+    }
+
+    return errores;
+  }
 }
