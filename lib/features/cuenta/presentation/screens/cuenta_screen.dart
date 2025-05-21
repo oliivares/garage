@@ -1,6 +1,6 @@
 import 'package:app_garagex/features/cuenta/presentation/bloc/cuenta_bloc.dart';
+import 'package:app_garagex/features/datos_personales/presentation/screens/datos_personales_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:app_garagex/features/datos_personales/datos_personales_screen.dart';
 import 'package:app_garagex/app.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

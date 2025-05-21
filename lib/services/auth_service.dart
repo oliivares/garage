@@ -77,6 +77,23 @@ class AuthService {
     required String email,
     required String telefono,
   }) async {
+    // Validación de email
+    if (!email.endsWith("@gmail.com")) {
+      return {
+        "success": false,
+        "message": "El correo debe terminar en @gmail.com",
+      };
+    }
+
+    // Validación de número de teléfono (al menos 9 dígitos)
+    if (telefono.length < 9 || int.tryParse(telefono) == null) {
+      return {
+        "success": false,
+        "message":
+            "El número de teléfono debe tener al menos 9 dígitos válidos",
+      };
+    }
+
     final url = Uri.parse("$_baseUrl/update");
 
     try {
@@ -91,7 +108,7 @@ class AuthService {
         "nombre": nombre,
         "nombreUsuario": nombreUsuario,
         "email": email,
-        "telefono": int.tryParse(telefono) ?? 0,
+        "telefono": int.parse(telefono),
       };
 
       final response = await http.put(
@@ -118,5 +135,36 @@ class AuthService {
         "message": "Error de conexión: ${e.toString()}",
       };
     }
+  }
+
+  static Future<Map<String, dynamic>> cambiarContrasena(
+    String actual,
+    String nueva,
+  ) async {
+    final token = await _getToken(); // Obtener token
+
+    if (token == null) {
+      return {"success": false, "message": "No hay token disponible"};
+    }
+
+    final response = await http.put(
+      Uri.parse("$_baseUrl/cambiar-contrasena"),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({"actual": actual, "nueva": nueva}),
+    );
+
+    if (response.statusCode == 200) {
+      return {"success": true};
+    } else {
+      return {"success": false, "message": jsonDecode(response.body)};
+    }
+  }
+
+  static Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString("token");
   }
 }
