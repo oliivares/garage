@@ -35,5 +35,7 @@
   "startSession": "Iniciar sesion",
   "fullName": "Nombre completo *",
   "email": "email *",
-  "phone": "Telefono"
+  "phone": "Telefono",
+  "updateData": "Actualizar datos",
+  "changePassword": "Cambiar contraseña?"
 }
