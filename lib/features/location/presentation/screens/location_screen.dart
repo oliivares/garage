@@ -5,7 +5,10 @@ import 'package:app_garagex/features/location/presentation/bloc/map_bloc.dart';
 import 'package:app_garagex/features/location/presentation/bloc/map_event.dart';
 import 'package:app_garagex/features/location/presentation/bloc/map_state.dart';
 import 'package:app_garagex/features/location/presentation/widgets/search_bar.dart';
+import 'package:app_garagex/features/location/presentation/widgets/taller_info_dialog.dart';
 import 'package:app_garagex/features/location/presentation/widgets/zoom_botton.dart';
+import 'package:app_garagex/features/location/data/models/taller.dart';
+import 'package:app_garagex/services/taller_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -39,11 +42,13 @@ class _MapScreenBody extends StatefulWidget {
 class _MapScreenBodyState extends State<_MapScreenBody> {
   final MapController _mapController = MapController();
   LatLng? _currentLocation;
+  List<Taller> _talleres = [];
 
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
+    _cargarTalleres();
   }
 
   Future<void> _getCurrentLocation() async {
@@ -66,6 +71,23 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
     });
 
     _mapController.move(_currentLocation!, 15.0);
+  }
+
+  Future<void> _cargarTalleres() async {
+    try {
+      final talleresService = TalleresService(baseUrl: 'http://10.0.2.2:8080');
+      final talleres = await talleresService.obtenerTalleres();
+      print("Cantidad de talleres recibidos: ${talleres.length}");
+      for (var t in talleres) {
+        print("Taller: ${t.nombre} - (${t.latitud}, ${t.longitud})");
+      }
+
+      setState(() {
+        _talleres = talleres;
+      });
+    } catch (e) {
+      print("❌ Error cargando talleres: $e");
+    }
   }
 
   @override
@@ -119,6 +141,28 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
                             color: Colors.blue,
                           ),
                         ),
+                      ..._talleres.map((taller) {
+                        return Marker(
+                          point: LatLng(taller.latitud, taller.longitud),
+                          width: 50,
+                          height: 50,
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder:
+                                    (_) => TallerInfoDialog(taller: taller),
+                              );
+                            },
+
+                            child: const Icon(
+                              Icons.build,
+                              color: Colors.orange,
+                              size: 30,
+                            ),
+                          ),
+                        );
+                      }),
                     ],
                   ),
                 ],
@@ -148,8 +192,6 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
                   coordinates: _currentLocation!,
                   name: "Mi Ubicación",
                 );
-
-                // Mueve el mapa visualmente y actualiza el Bloc
                 context.read<MapBloc>().add(
                   ResetToUserLocationEvent(userLocation: userLocation),
                 );
@@ -158,7 +200,6 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
             child: const Icon(Icons.my_location),
             foregroundColor: Colors.deepOrange,
           ),
-
           const SizedBox(height: 10),
           const ZoomButtonsWidget(),
         ],
