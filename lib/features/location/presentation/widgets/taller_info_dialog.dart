@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:app_garagex/features/location/data/models/taller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TallerInfoDialog extends StatelessWidget {
   final Taller taller;
 
   const TallerInfoDialog({required this.taller, Key? key}) : super(key: key);
+
+  // Función para lanzar la llamada telefónica
+  void _llamar(BuildContext context, String numero) async {
+    final Uri url = Uri(scheme: 'tel', path: numero);
+
+    try {
+      final bool launched = await launchUrl(url);
+      if (!launched) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No se pudo iniciar la llamada')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error al intentar llamar: $e')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +35,6 @@ class TallerInfoDialog extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: IntrinsicHeight(
-          // para que tome el tamaño justo del contenido
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,6 +48,16 @@ class TallerInfoDialog extends StatelessWidget {
               if (taller.telefono != null) ...[
                 const SizedBox(height: 8),
                 Text("Teléfono: ${taller.telefono}"),
+                const SizedBox(height: 8),
+                ElevatedButton.icon(
+                  onPressed: () => _llamar(context, taller.telefono!),
+                  icon: const Icon(Icons.phone),
+                  label: const Text("Llamar"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
               ],
               if (taller.email != null) ...[
                 const SizedBox(height: 8),
