@@ -64,7 +64,13 @@ class VehiculoService {
     final url = Uri.parse('$baseUrl/usuario/$usuarioId');
 
     try {
-      final response = await http.get(url);
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
 
       print("🔍 GET $url");
       print("📦 Status: ${response.statusCode}");
