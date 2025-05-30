@@ -34,9 +34,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       if (state is MapLoaded) {
         final current = state as MapLoaded;
         final newZoom = (current.zoom + 1).clamp(2.0, 18.0);
+
         emit(
           MapLoaded(
-            center: current.center,
+            center: current.center, // 👈 mantiene centro actual
             zoom: newZoom,
             searchLocation: current.searchLocation,
           ),
@@ -44,14 +45,14 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       }
     });
 
-    // 👉 Zoom Out
     on<ZoomOutEvent>((event, emit) {
       if (state is MapLoaded) {
         final current = state as MapLoaded;
         final newZoom = (current.zoom - 1).clamp(2.0, 18.0);
+
         emit(
           MapLoaded(
-            center: current.center,
+            center: current.center, // 👈 mantiene centro actual
             zoom: newZoom,
             searchLocation: current.searchLocation,
           ),

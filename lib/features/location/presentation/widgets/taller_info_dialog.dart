@@ -7,7 +7,6 @@ class TallerInfoDialog extends StatelessWidget {
 
   const TallerInfoDialog({required this.taller, Key? key}) : super(key: key);
 
-  // Función para lanzar la llamada telefónica
   void _llamar(BuildContext context, String numero) async {
     final Uri url = Uri(scheme: 'tel', path: numero);
 
@@ -29,7 +28,7 @@ class TallerInfoDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        side: BorderSide(color: Colors.deepOrange, width: 3),
+        side: const BorderSide(color: Colors.deepOrange, width: 3),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -45,10 +44,14 @@ class TallerInfoDialog extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text("Dirección: ${taller.direccion}"),
+              if (taller.email != null) ...[
+                const SizedBox(height: 8),
+                Text("Email: ${taller.email}"),
+              ],
               if (taller.telefono != null) ...[
                 const SizedBox(height: 8),
                 Text("Teléfono: ${taller.telefono}"),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 ElevatedButton.icon(
                   onPressed: () => _llamar(context, taller.telefono!),
                   icon: const Icon(Icons.phone),
@@ -59,11 +62,7 @@ class TallerInfoDialog extends StatelessWidget {
                   ),
                 ),
               ],
-              if (taller.email != null) ...[
-                const SizedBox(height: 8),
-                Text("Email: ${taller.email}"),
-              ],
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(

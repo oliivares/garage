@@ -20,15 +20,58 @@ class _EditarVehiculoScreenState extends State<EditarVehiculoScreen> {
   final _formKey = GlobalKey<FormState>();
   late EditarVehiculoBloc bloc;
 
+  int? _selectedPotencia;
+  int? _selectedAnyo;
+
+  final List<int> potenciaOptions = [
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    50,
+    75,
+    100,
+    150,
+    200,
+    250,
+    300,
+    350,
+    400,
+    450,
+    500,
+    600,
+    700,
+    800,
+    900,
+    1000,
+    1200,
+    1400,
+    1600,
+    1800,
+    2000,
+  ];
+
   @override
   void initState() {
     super.initState();
     bloc = EditarVehiculoBloc();
     bloc.inicializarCamposVehiculo(widget.vehiculo);
+
+    _selectedPotencia = int.tryParse(bloc.potenciaController.text);
+    _selectedAnyo = int.tryParse(bloc.anyoController.text);
   }
 
   void _guardarCambios() async {
     if (!_formKey.currentState!.validate()) return;
+
+    bloc.potenciaController.text = _selectedPotencia?.toString() ?? '0';
+    bloc.anyoController.text = _selectedAnyo?.toString() ?? '0';
 
     final result = await bloc.editarVehiculo(widget.vehiculo);
 
@@ -40,9 +83,7 @@ class _EditarVehiculoScreenState extends State<EditarVehiculoScreen> {
           duration: const Duration(seconds: 2),
         ),
       );
-      await Future.delayed(
-        const Duration(seconds: 2),
-      ); // Espera que se vea el mensaje
+      await Future.delayed(const Duration(seconds: 2));
       widget.onSuccess();
       Navigator.pop(context);
     } else {
@@ -103,28 +144,54 @@ class _EditarVehiculoScreenState extends State<EditarVehiculoScreen> {
                               ? AppLocalizations.of(context)!.fieldRequired
                               : null,
                 ),
-                TextFormField(
-                  controller: bloc.potenciaController,
+                DropdownButtonFormField<int>(
+                  value: _selectedPotencia,
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.power,
                   ),
-                  keyboardType: TextInputType.number,
+                  items:
+                      potenciaOptions.map((cv) {
+                        String label =
+                            cv >= 1000
+                                ? '${(cv / 1000).toStringAsFixed(cv % 1000 == 0 ? 0 : 1)}k CV'
+                                : '$cv CV';
+                        if ([1000, 1200, 1400, 1600, 1800, 2000].contains(cv)) {
+                          label = '${cv ~/ 1000},${(cv % 1000 ~/ 100)}00 CV';
+                        }
+                        return DropdownMenuItem(value: cv, child: Text(label));
+                      }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedPotencia = value;
+                    });
+                  },
                   validator:
                       (value) =>
-                          value == null || value.isEmpty
-                              ? AppLocalizations.of(context)!.fieldRequired
+                          value == null
+                              ? AppLocalizations.of(context)!.selectThePower
                               : null,
                 ),
-                TextFormField(
-                  controller: bloc.anyoController,
+                DropdownButtonFormField<int>(
+                  value: _selectedAnyo,
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.year,
                   ),
-                  keyboardType: TextInputType.number,
+                  items: List.generate(DateTime.now().year - 1998, (index) {
+                    int year = 1999 + index;
+                    return DropdownMenuItem(
+                      value: year,
+                      child: Text(year.toString()),
+                    );
+                  }),
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedAnyo = value;
+                    });
+                  },
                   validator:
                       (value) =>
-                          value == null || value.isEmpty
-                              ? AppLocalizations.of(context)!.fieldRequired
+                          value == null
+                              ? AppLocalizations.of(context)!.selectAnyo
                               : null,
                 ),
                 const SizedBox(height: 24),
