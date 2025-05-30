@@ -1,7 +1,7 @@
 import 'package:app_garagex/features/cuenta/presentation/screens/cuenta_screen.dart';
 import 'package:app_garagex/features/vehiculo/presentation/screens/vehiculo_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:app_garagex/features/home/home_screen.dart';
+import 'package:app_garagex/features/home/presentation/screens/home_screen.dart';
 import 'package:app_garagex/features/location/presentation/screens/location_screen.dart';
 import 'package:app_garagex/features/registro_citas/presentation/screens/registro_screen.dart';
 
@@ -42,7 +42,11 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             label: "Ubicación",
           ),
           BottomNavigationBarItem(icon: Icon(Icons.list), label: "Registro"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
+          BottomNavigationBarItem(
+            icon: ImageIcon(AssetImage("assets/logo_garagex.png"), size: 40),
+            label: "Inicio",
+          ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.directions_car),
             label: "Vehículos",
