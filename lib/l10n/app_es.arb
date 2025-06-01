@@ -37,5 +37,7 @@
   "email": "email *",
   "phone": "Telefono",
   "updateData": "Actualizar datos",
-  "changePassword": "Cambiar contraseña?"
+  "changePassword": "Cambiar contraseña?",
+  "lightMode": "Modo claro",
+  "darkMode": "Modo oscuro"
 }

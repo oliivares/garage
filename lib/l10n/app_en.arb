@@ -35,5 +35,7 @@
   "startSession": "Start session",
   "fullName": "Full name *",
   "email": "email *",
-  "phone": "Phone"
+  "phone": "Phone",
+  "lightMode": "Light mode",
+  "darkMode": "Dark mode"
 }

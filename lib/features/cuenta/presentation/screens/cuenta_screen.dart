@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:app_garagex/features/cuenta/presentation/bloc/cuenta_bloc.dart';
+import 'package:app_garagex/features/cuenta/presentation/screens/themeProvidere.dart';
 import 'package:app_garagex/features/datos_personales/presentation/screens/datos_personales_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/app.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 class CuentaScreen extends StatefulWidget {
   const CuentaScreen({super.key});
@@ -86,6 +88,7 @@ class _CuentaScreenState extends State<CuentaScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = CuentaController();
+    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -119,7 +122,7 @@ class _CuentaScreenState extends State<CuentaScreen> {
               ),
             ),
             const Divider(),
-            // Opciones de cuenta
+
             ListTile(
               leading: const Icon(Icons.person),
               title: Text(AppLocalizations.of(context)!.personalData),
@@ -141,6 +144,17 @@ class _CuentaScreenState extends State<CuentaScreen> {
               leading: const Icon(Icons.logout),
               title: Text(AppLocalizations.of(context)!.logout),
               onTap: () => controller.cerrarSesion(context),
+            ),
+            ListTile(
+              leading: const Icon(Icons.brightness_6),
+              title: Text(
+                themeProvider.isDarkMode
+                    ? AppLocalizations.of(context)!.lightMode
+                    : AppLocalizations.of(context)!.darkMode,
+              ),
+              onTap: () {
+                themeProvider.toggleTheme();
+              },
             ),
           ],
         ),

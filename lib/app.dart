@@ -1,7 +1,9 @@
-import 'package:app_garagex/features/login/presentation/screens/login_screen.dart';
+import 'package:app_garagex/features/cuenta/presentation/screens/themeProvidere.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:app_garagex/features/login/presentation/screens/login_screen.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -42,10 +44,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       locale: _locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       debugShowCheckedModeBanner: false,
       home: const LoginScreen(),
     );
