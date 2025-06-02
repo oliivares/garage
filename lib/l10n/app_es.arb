@@ -39,5 +39,9 @@
   "updateData": "Actualizar datos",
   "changePassword": "Cambiar contraseña?",
   "lightMode": "Modo claro",
-  "darkMode": "Modo oscuro"
+  "darkMode": "Modo oscuro",
+  "location": "Ubicación",
+  "registry": "Registro",
+  "home": "Inicio",
+  "vehicles": "Vehiculos"
 }

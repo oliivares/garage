@@ -37,5 +37,9 @@
   "email": "email *",
   "phone": "Phone",
   "lightMode": "Light mode",
-  "darkMode": "Dark mode"
+  "darkMode": "Dark mode",
+  "location": "Location",
+  "registry": "Registry",
+  "home": "Home",
+  "vehicles": "Vehicles"
 }

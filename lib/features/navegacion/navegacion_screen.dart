@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:app_garagex/features/home/presentation/screens/home_screen.dart';
 import 'package:app_garagex/features/location/presentation/screens/location_screen.dart';
 import 'package:app_garagex/features/registro_citas/presentation/screens/registro_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -31,27 +32,37 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: IndexedStack(index: _selectedIndex, children: _screens),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
-            label: "Ubicación",
+            icon: const Icon(Icons.location_on),
+            label: localizations.location,
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "Registro"),
           BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage("assets/logo_garagex.png"), size: 40),
-            label: "Inicio",
+            icon: const Icon(Icons.list),
+            label: localizations.registry, // debes definir esto en .arb
           ),
-
           BottomNavigationBarItem(
-            icon: Icon(Icons.directions_car),
-            label: "Vehículos",
+            icon: const ImageIcon(
+              AssetImage("assets/logo_garagex.png"),
+              size: 40,
+            ),
+            label: localizations.home, // debes definir esto en .arb
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Cuenta"),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.directions_car),
+            label: localizations.vehicles, // debes definir esto en .arb
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.person),
+            label: localizations.account, // debes definir esto en .arb
+          ),
         ],
         selectedItemColor: Colors.deepOrangeAccent,
         unselectedItemColor: Colors.grey,

@@ -1,8 +1,65 @@
+import 'package:app_garagex/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:table_calendar/table_calendar.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Map<String, dynamic>? _usuario;
+  bool _cargando = true;
+  DateTime? _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _cargarUsuario();
+  }
+
+  Future<void> _cargarUsuario() async {
+    final response = await AuthService.getUsuarioActual();
+    if (response['success']) {
+      setState(() {
+        _usuario = response['usuario'];
+        _cargando = false;
+      });
+    } else {
+      setState(() {
+        _cargando = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(response['message'] ?? 'Error desconocido')),
+      );
+    }
+  }
+
+  Future<void> _pickDate() async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.deepOrangeAccent,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,66 +68,92 @@ class HomeScreen extends StatelessWidget {
         title: const Text("GarageX"),
         backgroundColor: Colors.deepOrangeAccent,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_none),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("No hay notificaciones nuevas.")),
+              );
+            },
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Calendario
-            TableCalendar(
-              firstDay: DateTime.utc(2020, 1, 1),
-              lastDay: DateTime.utc(2030, 12, 31),
-              focusedDay: DateTime.now(),
-              calendarStyle: const CalendarStyle(
-                todayDecoration: BoxDecoration(
-                  color: Colors.deepOrangeAccent,
-                  shape: BoxShape.circle,
+      body:
+          _cargando
+              ? const Center(child: CircularProgressIndicator())
+              : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    // Usuario y rol
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade50,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.deepOrangeAccent),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.person,
+                            color: Colors.deepOrangeAccent,
+                          ),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Usuario: ${_usuario?['nombre'] ?? '---'}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text("Rol: ${_usuario?['rol'] ?? '---'}"),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Mostrar fecha seleccionada
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Fecha seleccionada:",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        Text(
+                          _selectedDate != null
+                              ? "${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}"
+                              : "Ninguna",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Botón para seleccionar fecha
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: ElevatedButton.icon(
+                        onPressed: _pickDate,
+                        icon: const Icon(Icons.calendar_today),
+                        label: const Text("Seleccionar fecha"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.deepOrangeAccent,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-
-            // Sección de anuncios deslizables
-            SizedBox(
-              height: 120,
-              child: PageView(
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  AdCard(text: "¡Descuento del 20% en lavado de autos!"),
-                  AdCard(text: "Revisión gratis durante el mes de junio."),
-                  AdCard(text: "Nueva sucursal en tu ciudad."),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Widget para una tarjeta de anuncio
-class AdCard extends StatelessWidget {
-  final String text;
-
-  const AdCard({super.key, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Colors.orange.shade100,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
     );
   }
 }
