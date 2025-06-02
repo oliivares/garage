@@ -1,3 +1,4 @@
+import 'package:app_garagex/features/location/domain/entities/location_entity.dart';
 import 'package:app_garagex/features/location/domain/usercases/search_location_usercase.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'map_event.dart';
@@ -37,7 +38,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
         emit(
           MapLoaded(
-            center: current.center, // 👈 mantiene centro actual
+            center: current.center,
             zoom: newZoom,
             searchLocation: current.searchLocation,
           ),
@@ -54,6 +55,19 @@ class MapBloc extends Bloc<MapEvent, MapState> {
           MapLoaded(
             center: current.center, // 👈 mantiene centro actual
             zoom: newZoom,
+            searchLocation: current.searchLocation,
+          ),
+        );
+      }
+    });
+
+    on<UpdateMapCenterEvent>((event, emit) {
+      if (state is MapLoaded) {
+        final current = state as MapLoaded;
+        emit(
+          MapLoaded(
+            center: LocationEntity(coordinates: event.newCenter, name: ''),
+            zoom: current.zoom,
             searchLocation: current.searchLocation,
           ),
         );

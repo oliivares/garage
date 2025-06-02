@@ -202,7 +202,7 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
             foregroundColor: Colors.deepOrange,
           ),
           const SizedBox(height: 10),
-          const ZoomButtonsWidget(),
+          ZoomButtonsWidget(mapController: _mapController),
         ],
       ),
     );

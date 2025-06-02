@@ -1,34 +1,39 @@
+// zoom_botton.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:latlong2/latlong.dart';
 import '../bloc/map_bloc.dart';
 import '../bloc/map_event.dart';
+import 'package:flutter_map/flutter_map.dart';
 
 class ZoomButtonsWidget extends StatelessWidget {
-  const ZoomButtonsWidget({super.key});
+  final MapController mapController;
+
+  const ZoomButtonsWidget({super.key, required this.mapController});
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
-        FloatingActionButton(
+        FloatingActionButton.small(
           heroTag: 'zoom_in',
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.deepOrange,
-          child: const Icon(Icons.add),
           onPressed: () {
-            BlocProvider.of<MapBloc>(context).add(ZoomInEvent());
+            final currentCenter = mapController.camera.center;
+            context.read<MapBloc>().add(UpdateMapCenterEvent(currentCenter));
+            context.read<MapBloc>().add(ZoomInEvent());
           },
+          child: const Icon(Icons.zoom_in),
         ),
-        const SizedBox(height: 10),
-        FloatingActionButton(
+        const SizedBox(height: 8),
+        FloatingActionButton.small(
           heroTag: 'zoom_out',
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.deepOrange,
-          child: const Icon(Icons.remove),
           onPressed: () {
-            BlocProvider.of<MapBloc>(context).add(ZoomOutEvent());
+            final currentCenter = mapController.camera.center;
+            context.read<MapBloc>().add(UpdateMapCenterEvent(currentCenter));
+            context.read<MapBloc>().add(ZoomOutEvent());
           },
+          child: const Icon(Icons.zoom_out),
         ),
       ],
     );
