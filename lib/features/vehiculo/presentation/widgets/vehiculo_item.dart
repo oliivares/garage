@@ -56,50 +56,73 @@ class VehiculoItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.directions_car, color: Colors.deepOrange),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '${AppLocalizations.of(context)!.licensePlate}: "${vehiculo['matricula']}"',
-          ),
-          Text(
-            '${AppLocalizations.of(context)!.brand}: "${vehiculo['marca']}"',
-            style: const TextStyle(fontSize: 13),
-          ),
-        ],
-      ),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.edit, color: Colors.orange),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (_) => EditarVehiculoScreen(
-                        vehiculo: vehiculo,
-                        onSuccess: controller.refresh,
-                      ),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete, color: Colors.red),
-            onPressed: () => _confirmarEliminacion(context),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF9F9F9), // Blanco suave
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (_) => VehiculoDetalleDialog(vehiculo: vehiculo),
-        );
-      },
+      child: ListTile(
+        leading: const Icon(Icons.directions_car, color: Colors.deepOrange),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${AppLocalizations.of(context)!.licensePlate}: "${vehiculo['matricula']}"',
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 14, // Reducido
+              ),
+            ),
+            Text(
+              '${AppLocalizations.of(context)!.brand}: "${vehiculo['marca']}"',
+              style: const TextStyle(
+                fontSize: 12, // Reducido
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit, color: Colors.orange),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder:
+                        (_) => EditarVehiculoScreen(
+                          vehiculo: vehiculo,
+                          onSuccess: controller.refresh,
+                        ),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () => _confirmarEliminacion(context),
+            ),
+          ],
+        ),
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (_) => VehiculoDetalleDialog(vehiculo: vehiculo),
+          );
+        },
+      ),
     );
   }
 }

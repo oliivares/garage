@@ -198,6 +198,7 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
               }
             },
             child: const Icon(Icons.my_location),
+            backgroundColor: Colors.white,
             foregroundColor: Colors.deepOrange,
           ),
           const SizedBox(height: 10),

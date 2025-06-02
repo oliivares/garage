@@ -13,6 +13,7 @@ class ZoomButtonsWidget extends StatelessWidget {
       children: [
         FloatingActionButton(
           heroTag: 'zoom_in',
+          backgroundColor: Colors.white,
           foregroundColor: Colors.deepOrange,
           child: const Icon(Icons.add),
           onPressed: () {
@@ -22,6 +23,7 @@ class ZoomButtonsWidget extends StatelessWidget {
         const SizedBox(height: 10),
         FloatingActionButton(
           heroTag: 'zoom_out',
+          backgroundColor: Colors.white,
           foregroundColor: Colors.deepOrange,
           child: const Icon(Icons.remove),
           onPressed: () {
