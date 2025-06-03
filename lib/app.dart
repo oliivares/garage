@@ -1,7 +1,7 @@
 import 'package:app_garagex/features/cuenta/presentation/screens/themeProvidere.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:app_garagex/features/login/presentation/screens/login_screen.dart';
 

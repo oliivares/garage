@@ -2,7 +2,7 @@ import 'package:app_garagex/features/vehiculo/presentation/bloc/vehiculo_bloc.da
 import 'package:app_garagex/features/vehiculo/presentation/widgets/vehiculo_form.dart';
 import 'package:app_garagex/features/vehiculo/presentation/widgets/vehiculo_item.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 
 class VehiculosScreen extends StatefulWidget {
   const VehiculosScreen({super.key});

@@ -2,7 +2,7 @@ import 'package:app_garagex/features/vehiculo/presentation/bloc/vehiculo_bloc.da
 import 'package:app_garagex/features/vehiculo/presentation/screens/vehiculo_mod.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/services/vehiculo_service.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 
 class VehiculoItem extends StatelessWidget {
   final Map<String, dynamic> vehiculo;

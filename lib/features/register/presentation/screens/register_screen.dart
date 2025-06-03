@@ -2,7 +2,7 @@ import 'package:app_garagex/features/register/presentation/bloc/register_bloc.da
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:app_garagex/features/login/presentation/screens/login_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

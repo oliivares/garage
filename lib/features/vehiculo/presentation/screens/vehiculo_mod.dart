@@ -1,6 +1,6 @@
 import 'package:app_garagex/features/vehiculo/presentation/bloc/vehiculo_mod_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 
 class EditarVehiculoScreen extends StatefulWidget {
   final Map<String, dynamic> vehiculo;

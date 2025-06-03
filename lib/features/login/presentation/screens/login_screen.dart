@@ -2,7 +2,7 @@ import 'package:app_garagex/features/login/presentation/bloc/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/features/navegacion/navegacion_screen.dart';
 import 'package:app_garagex/features/register/presentation/screens/register_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

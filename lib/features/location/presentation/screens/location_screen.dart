@@ -197,9 +197,9 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
                 );
               }
             },
-            child: const Icon(Icons.my_location),
             backgroundColor: Colors.white,
             foregroundColor: Colors.deepOrange,
+            child: const Icon(Icons.my_location),
           ),
           const SizedBox(height: 10),
           ZoomButtonsWidget(mapController: _mapController),

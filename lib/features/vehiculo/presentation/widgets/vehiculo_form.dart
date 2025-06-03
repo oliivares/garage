@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app_garagex/services/vehiculo_service.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 
 class VehiculoForm extends StatefulWidget {
   final VoidCallback onSuccess;

@@ -22,9 +22,9 @@ class ZoomButtonsWidget extends StatelessWidget {
             context.read<MapBloc>().add(UpdateMapCenterEvent(currentCenter));
             context.read<MapBloc>().add(ZoomInEvent());
           },
-          child: const Icon(Icons.zoom_in),
           backgroundColor: Colors.white,
           foregroundColor: Colors.deepOrange,
+          child: const Icon(Icons.zoom_in),
         ),
         const SizedBox(height: 8),
         FloatingActionButton.small(
@@ -34,9 +34,9 @@ class ZoomButtonsWidget extends StatelessWidget {
             context.read<MapBloc>().add(UpdateMapCenterEvent(currentCenter));
             context.read<MapBloc>().add(ZoomOutEvent());
           },
-          child: const Icon(Icons.zoom_out),
           backgroundColor: Colors.white,
           foregroundColor: Colors.deepOrange,
+          child: const Icon(Icons.zoom_out),
         ),
       ],
     );

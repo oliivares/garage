@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:app_garagex/features/location/data/models/taller.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 
 class TallerInfoDialog extends StatelessWidget {
   final Taller taller;
 
-  const TallerInfoDialog({required this.taller, Key? key}) : super(key: key);
+  const TallerInfoDialog({required this.taller, super.key});
 
   void _llamar(BuildContext context, String numero) async {
     final Uri url = Uri(scheme: 'tel', path: numero);
@@ -45,16 +45,16 @@ class TallerInfoDialog extends StatelessWidget {
               ),
               SizedBox(height: 12),
               Text(
-                AppLocalizations.of(context)!.address + ": ${taller.direccion}",
+                "${AppLocalizations.of(context)!.address}: ${taller.direccion}",
               ),
               if (taller.email != null) ...[
                 const SizedBox(height: 8),
-                Text(AppLocalizations.of(context)!.email + ": ${taller.email}"),
+                Text("${AppLocalizations.of(context)!.email}: ${taller.email}"),
               ],
               if (taller.telefono != null) ...[
                 const SizedBox(height: 8),
                 Text(
-                  AppLocalizations.of(context)!.phone + ": ${taller.telefono}",
+                  "${AppLocalizations.of(context)!.phone}: ${taller.telefono}",
                 ),
                 const SizedBox(height: 12),
                 ElevatedButton.icon(

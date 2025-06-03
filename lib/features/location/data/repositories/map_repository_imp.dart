@@ -10,6 +10,7 @@ class MapRepositoryImpl implements MapRepository {
 
   MapRepositoryImpl({required this.client});
 
+  @override
   Future<LocationEntity> searchLocation(String query) async {
     final baseUrl = 'https://nominatim.openstreetmap.org/search';
     final url = Uri.parse(

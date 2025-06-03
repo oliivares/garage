@@ -130,8 +130,9 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
                     final success = await controller.actualizarDatos(
                       (msg) => _mostrarSnack(msg),
                     );
-                    if (success)
+                    if (success) {
                       _mostrarSnack("Datos actualizados correctamente");
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(

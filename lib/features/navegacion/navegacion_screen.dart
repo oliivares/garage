@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:app_garagex/features/home/presentation/screens/home_screen.dart';
 import 'package:app_garagex/features/location/presentation/screens/location_screen.dart';
 import 'package:app_garagex/features/registro_citas/presentation/screens/registro_screen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});

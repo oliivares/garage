@@ -1,6 +1,6 @@
 import 'package:app_garagex/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -108,8 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                AppLocalizations.of(context)!.user +
-                                    ": ${_usuario?['nombre'] ?? '---'}",
+                                "${AppLocalizations.of(context)!.user}: ${_usuario?['nombre'] ?? '---'}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
