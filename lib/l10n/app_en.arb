@@ -34,12 +34,21 @@
   "createAccount": "Create account",
   "startSession": "Start session",
   "fullName": "Full name *",
-  "email": "email *",
+  "email": "email ",
   "phone": "Phone",
   "lightMode": "Light mode",
   "darkMode": "Dark mode",
   "location": "Location",
   "registry": "Registry",
   "home": "Home",
-  "vehicles": "Vehicles"
+  "vehicles": "Vehicles",
+  "notifications": "There are no new notifications.",
+  "user": "User",
+  "selecteddate": "Selected date:",
+  "none": "None",
+  "selectdate": "Select date",
+  "searchplace": "Search place...",
+  "address": "Address",
+  "call": "Call",
+  "close": "Close"
 }

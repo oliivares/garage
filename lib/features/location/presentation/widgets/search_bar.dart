@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchBarWidget extends StatelessWidget {
   final void Function(String query) onSearch;
@@ -13,7 +14,7 @@ class SearchBarWidget extends StatelessWidget {
       controller: controller,
       onSubmitted: onSearch,
       decoration: InputDecoration(
-        hintText: 'Buscar lugar...',
+        hintText: AppLocalizations.of(context)!.searchplace,
         hintStyle: TextStyle(color: Colors.black54),
         prefixIcon: const Icon(Icons.search, color: Colors.deepOrangeAccent),
         filled: true,

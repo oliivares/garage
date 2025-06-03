@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_garagex/features/location/data/models/taller.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TallerInfoDialog extends StatelessWidget {
   final Taller taller;
@@ -42,20 +43,24 @@ class TallerInfoDialog extends StatelessWidget {
                 taller.nombre,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              const SizedBox(height: 12),
-              Text("Dirección: ${taller.direccion}"),
+              SizedBox(height: 12),
+              Text(
+                AppLocalizations.of(context)!.address + ": ${taller.direccion}",
+              ),
               if (taller.email != null) ...[
                 const SizedBox(height: 8),
-                Text("Email: ${taller.email}"),
+                Text(AppLocalizations.of(context)!.email + ": ${taller.email}"),
               ],
               if (taller.telefono != null) ...[
                 const SizedBox(height: 8),
-                Text("Teléfono: ${taller.telefono}"),
+                Text(
+                  AppLocalizations.of(context)!.phone + ": ${taller.telefono}",
+                ),
                 const SizedBox(height: 12),
                 ElevatedButton.icon(
                   onPressed: () => _llamar(context, taller.telefono!),
                   icon: const Icon(Icons.phone),
-                  label: const Text("Llamar"),
+                  label: Text(AppLocalizations.of(context)!.call),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
@@ -67,7 +72,7 @@ class TallerInfoDialog extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cerrar'),
+                  child: Text(AppLocalizations.of(context)!.close),
                 ),
               ),
             ],

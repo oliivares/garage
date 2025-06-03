@@ -1,5 +1,6 @@
 import 'package:app_garagex/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -73,7 +74,9 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.notifications_none),
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("No hay notificaciones nuevas.")),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.notifications),
+                ),
               );
             },
           ),
@@ -105,7 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Usuario: ${_usuario?['nombre'] ?? '---'}",
+                                AppLocalizations.of(context)!.user +
+                                    ": ${_usuario?['nombre'] ?? '---'}",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -122,14 +126,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "Fecha seleccionada:",
+                        Text(
+                          AppLocalizations.of(context)!.selecteddate,
                           style: TextStyle(fontSize: 16),
                         ),
                         Text(
                           _selectedDate != null
                               ? "${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}"
-                              : "Ninguna",
+                              : AppLocalizations.of(context)!.none,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -144,10 +148,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       alignment: Alignment.centerRight,
                       child: ElevatedButton.icon(
                         onPressed: _pickDate,
-                        icon: const Icon(Icons.calendar_today),
-                        label: const Text("Seleccionar fecha"),
+                        icon: const Icon(
+                          Icons.calendar_today,
+                          color: Colors.white,
+                        ), // Color del ícono
+                        label: Text(
+                          AppLocalizations.of(context)!.selectdate,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ), // Color del texto
+                        ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepOrangeAccent,
+                          backgroundColor:
+                              Colors.deepOrangeAccent, // Color de fondo
                         ),
                       ),
                     ),

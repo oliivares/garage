@@ -43,5 +43,14 @@
   "location": "Ubicación",
   "registry": "Registro",
   "home": "Inicio",
-  "vehicles": "Vehiculos"
+  "vehicles": "Vehiculos",
+  "notifications": "No hay notificaciones nuevas.",
+  "user": "Usuario",
+  "selecteddate": "Fecha seleccionada:",
+  "none": "Ninguna",
+  "selectdate": "Seleccionar fecha",
+  "searchplace": "Buscar lugar...",
+  "address": "Direccion",
+  "call": "Llamar",
+  "close": "Close"
 }
