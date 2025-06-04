@@ -1,9 +1,9 @@
 import 'package:app_garagex/features/cuenta/presentation/screens/cuenta_screen.dart';
+import 'package:app_garagex/features/registro_citas/presentation/screens/registro_screen.dart';
 import 'package:app_garagex/features/vehiculo/presentation/screens/vehiculo_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/features/home/presentation/screens/home_screen.dart';
 import 'package:app_garagex/features/location/presentation/screens/location_screen.dart';
-import 'package:app_garagex/features/registro_citas/presentation/screens/registro_screen.dart';
 import 'package:app_garagex/l10n/app_localizations.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -18,7 +18,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final List<Widget> _screens = const [
     LocalizacionScreen(),
-    RegistroScreen(),
+    CitaScreen(),
     HomeScreen(),
     VehiculosScreen(),
     CuentaScreen(),

@@ -162,5 +162,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get call => 'Llamar';
 
   @override
-  String get close => 'Close';
+  String get close => 'Cerrar';
+
+  @override
+  String get delete => 'Eliminar';
+
+  @override
+  String get vehicle => 'Vehiculo';
+
+  @override
+  String get deleteVehicle => '¿Estás seguro de que deseas eliminar este vehículo?';
+
+  @override
+  String get deleteConfirmation => 'Vehicle successfully removed';
 }

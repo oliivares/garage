@@ -141,11 +141,6 @@ class _CuentaScreenState extends State<CuentaScreen> {
               onTap: () => _mostrarSelectorIdioma(context),
             ),
             ListTile(
-              leading: const Icon(Icons.logout),
-              title: Text(AppLocalizations.of(context)!.logout),
-              onTap: () => controller.cerrarSesion(context),
-            ),
-            ListTile(
               leading: const Icon(Icons.brightness_6),
               title: Text(
                 themeProvider.isDarkMode
@@ -155,6 +150,12 @@ class _CuentaScreenState extends State<CuentaScreen> {
               onTap: () {
                 themeProvider.toggleTheme();
               },
+            ),
+            const Spacer(),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: Text(AppLocalizations.of(context)!.logout),
+              onTap: () => controller.cerrarSesion(context),
             ),
           ],
         ),

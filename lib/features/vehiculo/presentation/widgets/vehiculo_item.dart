@@ -1,8 +1,8 @@
 import 'package:app_garagex/features/vehiculo/presentation/bloc/vehiculo_bloc.dart';
 import 'package:app_garagex/features/vehiculo/presentation/screens/vehiculo_mod.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/services/vehiculo_service.dart';
-import 'package:app_garagex/l10n/app_localizations.dart';
 
 class VehiculoItem extends StatelessWidget {
   final Map<String, dynamic> vehiculo;
@@ -19,10 +19,9 @@ class VehiculoItem extends StatelessWidget {
       context: context,
       builder:
           (_) => AlertDialog(
-            title: const Text('Eliminar vehículo'),
-            content: const Text(
-              '¿Estás seguro de que deseas eliminar este vehículo?',
-            ),
+title: Text('${AppLocalizations.of(context)!.delete} ${AppLocalizations.of(context)!.vehicle}'),
+            content: Text(
+AppLocalizations.of(context)!.deleteVehicle            ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
@@ -30,8 +29,8 @@ class VehiculoItem extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text(
-                  'Eliminar',
+                child:  Text(
+                  AppLocalizations.of(context)!.delete,
                   style: TextStyle(color: Colors.red),
                 ),
               ),
@@ -43,7 +42,7 @@ class VehiculoItem extends StatelessWidget {
       final response = await VehiculoService.eliminarVehiculo(vehiculo['id']);
       if (response['success']) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Vehículo eliminado correctamente')),
+           SnackBar(content: Text(AppLocalizations.of(context)!.deleteConfirmation)),
         );
         controller.refresh(); // Refrescar lista
       } else {

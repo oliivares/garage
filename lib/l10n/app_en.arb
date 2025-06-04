@@ -50,5 +50,9 @@
   "searchplace": "Search place...",
   "address": "Address",
   "call": "Call",
-  "close": "Close"
+  "close": "Close",
+  "delete": "Delete",
+  "vehicle": "Vehicle",
+  "deleteVehicle": "Are you sure you want to delete this vehicle?",
+  "deleteConfirmation": "Vehículo eliminado correctamente"
 }

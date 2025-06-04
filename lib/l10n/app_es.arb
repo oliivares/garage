@@ -52,5 +52,9 @@
   "searchplace": "Buscar lugar...",
   "address": "Direccion",
   "call": "Llamar",
-  "close": "Close"
+  "close": "Cerrar",
+  "delete": "Eliminar",
+  "vehicle": "Vehiculo",
+  "deleteVehicle": "¿Estás seguro de que deseas eliminar este vehículo?",
+  "deleteConfirmation": "Vehicle successfully removed"
 }

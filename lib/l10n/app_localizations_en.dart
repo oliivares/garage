@@ -163,4 +163,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get close => 'Close';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get vehicle => 'Vehicle';
+
+  @override
+  String get deleteVehicle => 'Are you sure you want to delete this vehicle?';
+
+  @override
+  String get deleteConfirmation => 'Vehículo eliminado correctamente';
 }
