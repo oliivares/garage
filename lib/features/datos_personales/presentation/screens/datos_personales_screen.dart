@@ -2,7 +2,9 @@ import 'package:app_garagex/features/datos_personales/presentation/bloc/datos_pe
 import 'package:app_garagex/features/datos_personales/presentation/widgets/cambio_contrasena_form.dart';
 import 'package:app_garagex/features/login/presentation/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:app_garagex/l10n/app_localizations.dart';
 
 class DatosPersonalesScreen extends StatefulWidget {
   const DatosPersonalesScreen({super.key});
@@ -49,12 +51,10 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
                   final prefs = await SharedPreferences.getInstance();
                   await prefs.clear();
 
-                  // Asegúrate de ejecutar la navegación DESPUÉS de cerrar el diálogo
                   if (Navigator.canPop(context)) {
-                    Navigator.pop(context); // Cierra el diálogo primero
+                    Navigator.pop(context); // cerrar diálogo
                   }
 
-                  // Espera al siguiente frame para evitar conflicto con el context actual
                   Future.microtask(() {
                     if (mounted) {
                       Navigator.pushAndRemoveUntil(
@@ -68,7 +68,6 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
 
                 return error;
               } catch (e, st) {
-                // captura cualquier excepción inesperada
                 debugPrint("🔥 Error en onCambiarContrasena: $e\n$st");
                 return "Ocurrió un error inesperado";
               }
@@ -81,7 +80,7 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Datos Personales"),
+        title: Text(AppLocalizations.of(context)!.personalData),
         backgroundColor: Colors.deepOrangeAccent,
       ),
       body: Padding(
@@ -91,26 +90,27 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
           child: ListView(
             children: [
               _buildField(
-                "Nombre completo",
+                AppLocalizations.of(context)!.fullName,
                 Icons.person,
                 controller.nombreController,
               ),
               _buildField(
-                "Nombre de usuario",
+                AppLocalizations.of(context)!.userName,
                 Icons.account_circle,
                 controller.usuarioController,
               ),
               _buildField(
-                "Email",
+                AppLocalizations.of(context)!.email,
                 Icons.email,
                 controller.emailController,
                 TextInputType.emailAddress,
               ),
               _buildField(
-                "Teléfono",
+                AppLocalizations.of(context)!.phone,
                 Icons.phone,
                 controller.telefonoController,
-                TextInputType.phone,
+                TextInputType.number,
+                [FilteringTextInputFormatter.digitsOnly], // 👉 SOLO NÚMEROS
               ),
               const SizedBox(height: 16),
               GestureDetector(
@@ -136,10 +136,17 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepOrange,
+                  backgroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: const Text("Actualizar Datos"),
+                child: const Text(
+                  "Actualizar Datos",
+                  style: TextStyle(
+                    color:
+                        Colors.deepOrange, // 👉 aquí le das el color al texto
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
@@ -153,12 +160,14 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
     IconData icon,
     TextEditingController controller, [
     TextInputType keyboardType = TextInputType.text,
+    List<TextInputFormatter>? inputFormatters,
   ]) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextFormField(
         controller: controller,
         keyboardType: keyboardType,
+        inputFormatters: inputFormatters,
         validator:
             (value) =>
                 value == null || value.isEmpty ? "Campo obligatorio" : null,
