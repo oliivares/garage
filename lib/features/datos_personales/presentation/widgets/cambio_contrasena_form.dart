@@ -104,6 +104,9 @@ class _CambiarContrasenaDialogState extends State<CambiarContrasenaDialog> {
                       if (!mounted) return;
                       Navigator.pop(context);
                     },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.deepOrange,
+                    ),
                     child: const Text("Cancelar"),
                   ),
                   ElevatedButton(
@@ -141,7 +144,8 @@ class _CambiarContrasenaDialogState extends State<CambiarContrasenaDialog> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepOrange,
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.deepOrange,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 12,

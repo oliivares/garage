@@ -75,13 +75,22 @@ class _CuentaScreenState extends State<CuentaScreen> {
     String label,
     bool seleccionado,
   ) {
-    return ListTile(
-      title: Text(label),
-      tileColor: seleccionado ? Colors.grey[300] : null,
-      onTap: () {
-        MyApp.setLocale(context, Locale(code));
-        Navigator.pop(context);
-      },
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: seleccionado ? Colors.deepOrange : Colors.transparent,
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: ListTile(
+        title: Text(label),
+        tileColor: seleccionado ? Colors.grey[300] : null,
+        onTap: () {
+          MyApp.setLocale(context, Locale(code));
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 
