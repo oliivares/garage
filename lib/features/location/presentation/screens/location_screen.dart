@@ -43,12 +43,13 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
   final MapController _mapController = MapController();
   LatLng? _currentLocation;
   List<Taller> _talleres = [];
+  bool _mapInitialized = false; // ✅ Controla inicialización única
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
     _cargarTalleres();
+    _getCurrentLocation();
   }
 
   Future<void> _getCurrentLocation() async {
@@ -66,21 +67,26 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
       desiredAccuracy: LocationAccuracy.high,
     );
 
+    final userLatLng = LatLng(position.latitude, position.longitude);
+    final userLocation = LocationEntity(
+      coordinates: userLatLng,
+      name: "Mi ubicación",
+    );
+
     setState(() {
-      _currentLocation = LatLng(position.latitude, position.longitude);
+      _currentLocation = userLatLng;
     });
 
-    _mapController.move(_currentLocation!, 15.0);
+    // ✅ Informa al Bloc para entrar en estado MapLoaded
+    context.read<MapBloc>().add(
+      ResetToUserLocationEvent(userLocation: userLocation),
+    );
   }
 
   Future<void> _cargarTalleres() async {
     try {
       final talleresService = TalleresService(baseUrl: 'http://10.0.2.2:8080');
       final talleres = await talleresService.obtenerTalleres();
-      print("Cantidad de talleres recibidos: ${talleres.length}");
-      for (var t in talleres) {
-        print("Taller: ${t.nombre} - (${t.latitud}, ${t.longitud})");
-      }
 
       setState(() {
         _talleres = talleres;
@@ -154,7 +160,6 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
                                     (_) => TallerInfoDialog(taller: taller),
                               );
                             },
-
                             child: const Icon(
                               Icons.build,
                               color: Colors.orange,

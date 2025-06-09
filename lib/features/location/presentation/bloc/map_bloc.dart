@@ -18,16 +18,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     });
 
     on<ResetToUserLocationEvent>((event, emit) {
-      if (state is MapLoaded) {
-        final current = state as MapLoaded;
-        emit(
-          MapLoaded(
-            center: event.userLocation,
-            zoom: current.zoom,
-            searchLocation: current.searchLocation,
-          ),
-        );
-      }
+      print("📍 ResetToUserLocationEvent recibido");
+      emit(
+        MapLoaded(center: event.userLocation, zoom: 15, searchLocation: null),
+      );
     });
 
     // 👉 Zoom In
