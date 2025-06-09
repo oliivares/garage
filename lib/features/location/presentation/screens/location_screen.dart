@@ -43,7 +43,6 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
   final MapController _mapController = MapController();
   LatLng? _currentLocation;
   List<Taller> _talleres = [];
-  bool _mapInitialized = false; // ✅ Controla inicialización única
 
   @override
   void initState() {
