@@ -72,11 +72,12 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
       name: "Mi ubicación",
     );
 
+    if (!mounted) return; // ✅ Añadir esta línea
+
     setState(() {
       _currentLocation = userLatLng;
     });
 
-    // ✅ Informa al Bloc para entrar en estado MapLoaded
     context.read<MapBloc>().add(
       ResetToUserLocationEvent(userLocation: userLocation),
     );
@@ -86,6 +87,8 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
     try {
       final talleresService = TalleresService(baseUrl: 'http://10.0.2.2:8080');
       final talleres = await talleresService.obtenerTalleres();
+
+      if (!mounted) return; // ✅ Añadir esta línea
 
       setState(() {
         _talleres = talleres;

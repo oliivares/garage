@@ -24,11 +24,25 @@ class DatosPersonalesController {
   }
 
   Future<bool> actualizarDatos(Function(String) mostrarMensaje) async {
+    // Obtener el usuario actual para saber su rol
+    final usuarioActualResult = await AuthService.getUsuarioActual();
+    if (usuarioActualResult["success"] != true) {
+      mostrarMensaje(
+        "No se pudo obtener el usuario actual para obtener el rol",
+      );
+      return false;
+    }
+
+    final usuarioActual = usuarioActualResult["usuario"];
+    // Obtener el rol actual y si es CLIENTE, mantenerlo
+    final rolActual = usuarioActual["rol"] ?? "CLIENTE";
+
     final result = await AuthService.actualizarUsuario(
       nombre: nombreController.text.trim(),
       nombreUsuario: usuarioController.text.trim(),
       email: emailController.text.trim(),
       telefono: telefonoController.text.trim(),
+      rol: rolActual, // Mantener el rol actual
     );
 
     if (result["success"]) {

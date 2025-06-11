@@ -23,6 +23,12 @@ class LoginBloc {
         final usuario = userResult["usuario"];
         await prefs.setString("usuario", jsonEncode(usuario));
         await prefs.setInt("usuarioId", usuario["id"]);
+
+        // 👇 Guardar el rol
+        final rol = usuario["rol"];
+        if (rol != null) {
+          await prefs.setString("rol", rol);
+        }
       }
     }
 

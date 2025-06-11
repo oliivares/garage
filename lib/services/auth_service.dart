@@ -76,8 +76,8 @@ class AuthService {
     required String nombreUsuario,
     required String email,
     required String telefono,
+    required String rol, // nuevo parámetro
   }) async {
-    // Validación de email
     if (!email.endsWith("@gmail.com")) {
       return {
         "success": false,
@@ -85,7 +85,6 @@ class AuthService {
       };
     }
 
-    // Validación de número de teléfono (al menos 9 dígitos)
     if (telefono.length < 9 || int.tryParse(telefono) == null) {
       return {
         "success": false,
@@ -95,22 +94,22 @@ class AuthService {
     }
 
     final url = Uri.parse("$_baseUrl/update");
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token");
+
+    if (token == null) {
+      return {"success": false, "message": "No hay token disponible"};
+    }
+
+    final data = {
+      "nombre": nombre,
+      "nombreUsuario": nombreUsuario,
+      "email": email,
+      "telefono": int.parse(telefono),
+      "rol": rol, // incluir el rol
+    };
 
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString("token");
-
-      if (token == null) {
-        return {"success": false, "message": "No hay token disponible"};
-      }
-
-      final Map<String, dynamic> data = {
-        "nombre": nombre,
-        "nombreUsuario": nombreUsuario,
-        "email": email,
-        "telefono": int.parse(telefono),
-      };
-
       final response = await http.put(
         url,
         headers: {
@@ -121,8 +120,7 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        final updatedUser = jsonDecode(response.body);
-        return {"success": true, "usuario": updatedUser};
+        return {"success": true, "usuario": jsonDecode(response.body)};
       } else {
         return {
           "success": false,

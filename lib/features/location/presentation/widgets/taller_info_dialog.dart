@@ -43,7 +43,7 @@ class TallerInfoDialog extends StatelessWidget {
                 taller.nombre,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               Text(
                 "${AppLocalizations.of(context)!.address}: ${taller.direccion}",
               ),
@@ -57,14 +57,28 @@ class TallerInfoDialog extends StatelessWidget {
                   "${AppLocalizations.of(context)!.phone}: ${taller.telefono}",
                 ),
                 const SizedBox(height: 12),
-                ElevatedButton.icon(
-                  onPressed: () => _llamar(context, taller.telefono!),
-                  icon: const Icon(Icons.phone),
-                  label: Text(AppLocalizations.of(context)!.call),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                  ),
+                Row(
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () => _llamar(context, taller.telefono!),
+                      icon: const Icon(Icons.phone),
+                      label: Text(AppLocalizations.of(context)!.call),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    ElevatedButton.icon(
+                      onPressed: null, // Deshabilitado
+                      icon: const Icon(Icons.chat),
+                      label: const Text('Contactar'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey.shade400,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ],
               const SizedBox(height: 12),

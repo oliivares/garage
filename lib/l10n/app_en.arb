@@ -55,5 +55,6 @@
   "delete": "Delete",
   "vehicle": "Vehicle",
   "deleteVehicle": "Are you sure you want to delete this vehicle?",
-  "deleteConfirmation": "Vehículo eliminado correctamente"
+  "deleteConfirmation": "Vehicle successfully removed",
+  "manageUsers": "Manage Users"
 }

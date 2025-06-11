@@ -35,8 +35,10 @@ class CitaScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => CitaDetalleScreen(
-                              cita: citaBloc.citaSeleccionada!),
+                          builder:
+                              (_) => CitaDetalleScreen(
+                                cita: citaBloc.citaSeleccionada!,
+                              ),
                         ),
                       );
                     }
@@ -68,13 +70,20 @@ class CitaDetalleScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Descripción: ${cita['descripcion']}",
-                style: const TextStyle(fontSize: 18)),
+            Text(
+              "Descripción: ${cita['descripcion']}",
+              style: const TextStyle(fontSize: 18),
+            ),
             const SizedBox(height: 10),
-            Text("Estado: ${cita['estado']}",
-                style: const TextStyle(fontSize: 18)),
+            Text(
+              "Estado: ${cita['estado']}",
+              style: const TextStyle(fontSize: 18),
+            ),
             const SizedBox(height: 10),
-            Text("Fecha: ${cita['fecha']}", style: const TextStyle(fontSize: 18)),
+            Text(
+              "Fecha: ${cita['fecha']}",
+              style: const TextStyle(fontSize: 18),
+            ),
           ],
         ),
       ),

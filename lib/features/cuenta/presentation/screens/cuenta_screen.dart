@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:app_garagex/features/cuenta/presentation/bloc/cuenta_bloc.dart';
 import 'package:app_garagex/features/cuenta/presentation/screens/themeProvidere.dart';
 import 'package:app_garagex/features/datos_personales/presentation/screens/datos_personales_screen.dart';
+import 'package:app_garagex/features/gestionUsuarioAdmin/presentation/screens/busquedaUsuario.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/app.dart';
 import 'package:app_garagex/l10n/app_localizations.dart';
@@ -160,6 +161,24 @@ class _CuentaScreenState extends State<CuentaScreen> {
                 themeProvider.toggleTheme();
               },
             ),
+
+            // Botón extra solo para administrador
+            if (userRole == "ADMINISTRADOR") ...[
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.search),
+                title: const Text("Gestión de usuarios (búsqueda)"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const BuscarUsuarioScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
+
             const Spacer(),
             ListTile(
               leading: const Icon(Icons.logout),
