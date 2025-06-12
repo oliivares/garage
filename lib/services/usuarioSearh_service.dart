@@ -1,18 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app_garagex/features/data/static_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 
 class UsuarioSearchService {
   final http.Client client;
+  final url = StaticData.baseUrl;
 
   UsuarioSearchService({required this.client});
 
   // Busca usuarios por nombre de usuario (retorna lista de strings)
   Future<List<String>> buscarUsuariosPorNombreUsuario(String texto) async {
     final uri = Uri.parse(
-      "http://10.0.2.2:8080/usuario/buscar-por-nombre-usuario?texto=$texto",
+      "$url/usuario/buscar-por-nombre-usuario?texto=$texto",
     );
     final response = await client.get(uri);
 
@@ -30,7 +32,7 @@ class UsuarioSearchService {
   Future<Map<String, dynamic>> obtenerUsuarioPorNombreUsuario(
     String nombre,
   ) async {
-    final uri = Uri.parse("http://10.0.2.2:8080/usuario/$nombre");
+    final uri = Uri.parse("$url/usuario/$nombre");
     final response = await client.get(uri);
 
     if (response.statusCode == 200) {

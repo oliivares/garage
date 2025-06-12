@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:app_garagex/features/location/data/models/taller.dart';
+import 'package:app_garagex/features/data/static_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TalleresService {
   final String baseUrl;
+  final url = StaticData.baseUrl;
 
   TalleresService({required this.baseUrl});
 
@@ -13,7 +15,7 @@ class TalleresService {
     final token = prefs.getString("token");
 
     final response = await http.get(
-      Uri.parse('http://10.0.2.2:8080/taller'),
+      Uri.parse('$url/taller'),
       headers: {'Authorization': 'Bearer $token'},
     );
 

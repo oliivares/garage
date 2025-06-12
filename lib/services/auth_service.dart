@@ -1,15 +1,16 @@
 import 'dart:convert';
+import 'package:app_garagex/features/data/static_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  static const String _baseUrl = "http://10.0.2.2:8080/usuario";
+  static final String _baseUrl = StaticData.baseUrl;
 
   static Future<Map<String, dynamic>> loginUser({
     required String userName,
     required String password,
   }) async {
-    final url = Uri.parse("$_baseUrl/login");
+    final url = Uri.parse("$_baseUrl/usuario/login");
 
     try {
       final response = await http.post(
@@ -36,7 +37,7 @@ class AuthService {
   }
 
   static Future<Map<String, dynamic>> getUsuarioActual() async {
-    final url = Uri.parse("$_baseUrl/getUsuarioActual");
+    final url = Uri.parse("$_baseUrl/usuario/getUsuarioActual");
 
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -93,7 +94,7 @@ class AuthService {
       };
     }
 
-    final url = Uri.parse("$_baseUrl/update");
+    final url = Uri.parse("$_baseUrl/usuario/update");
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("token");
 
@@ -146,7 +147,7 @@ class AuthService {
     }
 
     final response = await http.put(
-      Uri.parse("$_baseUrl/cambiar-contrasena"),
+      Uri.parse("$_baseUrl/usuario/cambiar-contrasena"),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',

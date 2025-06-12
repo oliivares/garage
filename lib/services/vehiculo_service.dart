@@ -1,9 +1,10 @@
 import 'dart:convert';
+import 'package:app_garagex/features/data/static_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VehiculoService {
-  static const String baseUrl = 'http://10.0.2.2:8080/vehiculo';
+  static  String baseUrl = StaticData.baseUrl;
 
   /// Agrega un nuevo vehículo
   static Future<Map<String, dynamic>> agregarVehiculo(
@@ -61,7 +62,7 @@ class VehiculoService {
   static Future<List<Map<String, dynamic>>> obtenerVehiculosDeUsuario(
     int usuarioId,
   ) async {
-    final url = Uri.parse('$baseUrl/usuario/$usuarioId');
+    final url = Uri.parse('$baseUrl/vehiculo/usuario/$usuarioId');
 
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -89,7 +90,7 @@ class VehiculoService {
   }
 
   static Future<Map<String, dynamic>> eliminarVehiculo(int id) async {
-    final url = Uri.parse('$baseUrl/$id');
+    final url = Uri.parse('$baseUrl/vehiculo/$id');
 
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -120,7 +121,7 @@ class VehiculoService {
   static Future<Map<String, dynamic>> editarVehiculo(
     Map<String, dynamic> vehiculoData,
   ) async {
-    final url = Uri.parse('$baseUrl/${vehiculoData["id"]}');
+    final url = Uri.parse('$baseUrl/vehiculo/${vehiculoData["id"]}');
 
     try {
       final prefs = await SharedPreferences.getInstance();

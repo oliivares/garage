@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:app_garagex/features/location/domain/repositories/map_repositories.dart';
 import 'package:http/http.dart' as http;
-import 'package:latlong2/latlong.dart'; // 👈 usa latlong2
+import 'package:latlong2/latlong.dart';
 
 import '../../domain/entities/location_entity.dart';
 

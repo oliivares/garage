@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:app_garagex/features/data/static_data.dart';
 import 'package:http/http.dart' as http;
 
 class InsertarUsuarioService {
-  static const String _url = "http://10.0.2.2:8080/usuario/register";
+  static final String _url = "${StaticData.baseUrl}/usuario/register";
 
   static Future<Map<String, dynamic>> insertarUsuario({
     required String nombre,

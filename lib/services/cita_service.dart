@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'package:app_garagex/features/data/static_data.dart';
 import 'package:http/http.dart' as http;
 
 class CitaService {
-  final String baseUrl = 'http://localhost:8080/citas';
+  final String baseUrl = '${StaticData.baseUrl}/citas';
 
   Future<List<Map<String, dynamic>>> obtenerCitas() async {
     final response = await http.get(Uri.parse(baseUrl));

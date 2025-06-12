@@ -1,4 +1,5 @@
 import 'package:app_garagex/features/location/data/repositories/map_repository_imp.dart';
+import 'package:app_garagex/features/data/static_data.dart';
 import 'package:app_garagex/features/location/domain/entities/location_entity.dart';
 import 'package:app_garagex/features/location/domain/usercases/search_location_usercase.dart';
 import 'package:app_garagex/features/location/presentation/bloc/map_bloc.dart';
@@ -85,7 +86,7 @@ class _MapScreenBodyState extends State<_MapScreenBody> {
 
   Future<void> _cargarTalleres() async {
     try {
-      final talleresService = TalleresService(baseUrl: 'http://10.0.2.2:8080');
+      final talleresService = TalleresService(baseUrl: StaticData.baseUrl);
       final talleres = await talleresService.obtenerTalleres();
 
       if (!mounted) return; // ✅ Añadir esta línea
