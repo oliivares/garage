@@ -1,4 +1,4 @@
-import 'package:app_garagex/services/auth_service.dart';
+import 'package:app_garagex/services/usuarioSearh_service.dart';
 import 'package:flutter/material.dart';
 
 class EditarUsuarioDialog extends StatefulWidget {
@@ -17,6 +17,8 @@ class _EditarUsuarioDialogState extends State<EditarUsuarioDialog> {
   late TextEditingController telefonoCtrl;
   String rolSeleccionado = "CLIENTE";
 
+  late final UsuarioSearchService _searchService;
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +31,11 @@ class _EditarUsuarioDialogState extends State<EditarUsuarioDialog> {
       text: widget.usuario["telefono"].toString(),
     );
     rolSeleccionado = widget.usuario["rol"] ?? "CLIENTE";
+
+    _searchService = UsuarioSearchService(client: createIOClient());
   }
+
+  bool _cambioRol() => widget.usuario['rol'] != rolSeleccionado;
 
   @override
   Widget build(BuildContext context) {
@@ -42,19 +48,24 @@ class _EditarUsuarioDialogState extends State<EditarUsuarioDialog> {
             TextField(
               controller: nombreCtrl,
               decoration: const InputDecoration(labelText: "Nombre"),
+              enabled: false,
             ),
             TextField(
               controller: nombreUsuarioCtrl,
               decoration: const InputDecoration(labelText: "Nombre de usuario"),
+              enabled: false,
             ),
             TextField(
               controller: emailCtrl,
               decoration: const InputDecoration(labelText: "Email"),
+              enabled: false,
             ),
             TextField(
               controller: telefonoCtrl,
               decoration: const InputDecoration(labelText: "Teléfono"),
+              enabled: false,
             ),
+            const SizedBox(height: 10),
             DropdownButton<String>(
               value: rolSeleccionado,
               items: const [
@@ -80,25 +91,25 @@ class _EditarUsuarioDialogState extends State<EditarUsuarioDialog> {
         ),
         ElevatedButton(
           onPressed: () async {
-            final res = await AuthService.actualizarUsuario(
-              nombre: nombreCtrl.text,
-              nombreUsuario: nombreUsuarioCtrl.text,
-              email: emailCtrl.text,
-              telefono: telefonoCtrl.text,
-              rol: rolSeleccionado,
-            );
-            if (res["success"]) {
-              Navigator.pop(context);
+            if (!_cambioRol()) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Usuario actualizado")),
+                const SnackBar(content: Text("No hay cambios en el rol")),
               );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(res["message"] ?? "Error")),
-              );
+              return;
             }
+
+            final resultado = await _searchService.cambiarRolUsuario(
+              nombreUsuario: widget.usuario['nombreUsuario'],
+              nuevoRol: rolSeleccionado,
+            );
+
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(resultado["message"])));
+
+            if (resultado["success"]) Navigator.pop(context);
           },
-          child: const Text("Guardar"),
+          child: const Text("Guardar cambios"),
         ),
       ],
     );

@@ -4,13 +4,13 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VehiculoService {
-  static  String baseUrl = StaticData.baseUrl;
+  static String baseUrl = StaticData.baseUrl;
 
   /// Agrega un nuevo vehículo
   static Future<Map<String, dynamic>> agregarVehiculo(
     Map<String, dynamic> vehiculoData,
   ) async {
-    final url = Uri.parse(baseUrl);
+    final url = Uri.parse("$baseUrl/vehiculo");
 
     try {
       final prefs = await SharedPreferences.getInstance();

@@ -20,10 +20,16 @@ class AuthService {
       );
 
       if (response.statusCode == 200 && response.body.startsWith('ey')) {
+        final token = response.body;
+
+        // GUARDAR TOKEN EN SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString("token", token);
+
         return {
           "success": true,
           "message": "Inicio de sesión exitoso",
-          "token": response.body,
+          "token": token,
         };
       } else {
         return {"success": false, "message": response.body};

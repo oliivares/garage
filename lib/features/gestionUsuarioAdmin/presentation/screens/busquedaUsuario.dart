@@ -77,6 +77,9 @@ class _BuscarUsuarioScreenState extends State<BuscarUsuarioScreen> {
                         try {
                           final usuarioCompleto = await _searchService
                               .obtenerUsuarioPorNombreUsuario(sugerencia);
+
+                          print("Usuario recibido: $usuarioCompleto");
+
                           showDialog(
                             context: context,
                             builder:
@@ -84,11 +87,15 @@ class _BuscarUsuarioScreenState extends State<BuscarUsuarioScreen> {
                                   usuario: usuarioCompleto,
                                 ),
                           );
-                        } catch (e) {
+                        } catch (e, stackTrace) {
+                          print("ERROR al obtener usuario:");
+                          print("Exception: $e");
+                          print("StackTrace: $stackTrace");
+
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content: Text(
-                                "Error al cargar los datos del usuario",
+                                "Error al cargar los datos del usuario: $e",
                               ),
                             ),
                           );

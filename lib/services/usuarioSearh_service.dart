@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:app_garagex/features/data/static_data.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UsuarioSearchService {
   final http.Client client;
@@ -28,17 +29,120 @@ class UsuarioSearchService {
     }
   }
 
-  // Obtiene los datos completos de un usuario
-  Future<Map<String, dynamic>> obtenerUsuarioPorNombreUsuario(
-    String nombre,
-  ) async {
-    final uri = Uri.parse("$url/usuario/$nombre");
-    final response = await client.get(uri);
+  Future<Map<String, dynamic>> cambiarRolUsuario({
+    required String nombreUsuario,
+    required String nuevoRol,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      return {"success": false, "message": "No hay token disponible"};
+    }
+
+    final uri = Uri.parse(
+      "$url/usuario/cambiar-rol?nombreUsuario=$nombreUsuario&nuevoRol=$nuevoRol",
+    );
+
+    final response = await client.put(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body) as Map<String, dynamic>;
+      return {"success": true, "message": response.body};
     } else {
-      throw Exception("Error al obtener usuario: ${response.statusCode}");
+      return {
+        "success": false,
+        "message":
+            response.body.isNotEmpty
+                ? response.body
+                : "Error al cambiar el rol",
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> actualizarUsuario({
+    required String nombre,
+    required String nombreUsuario,
+    required String email,
+    required String telefono,
+    required String rol,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      return {"success": false, "message": "No hay token disponible"};
+    }
+
+    final uri = Uri.parse("$url/usuario/update");
+
+    final response = await client.put(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({
+        "nombre": nombre,
+        "nombreUsuario": nombreUsuario,
+        "email": email,
+        "telefono": int.tryParse(telefono),
+        "rol": rol,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return {"success": true};
+    } else {
+      dynamic error;
+      try {
+        error = jsonDecode(response.body);
+      } catch (e) {
+        error = response.body; // texto plano
+      }
+
+      return {
+        "success": false,
+        "message": error is String ? error : error["message"] ?? "Error",
+      };
+    }
+  }
+
+  Future<Map<String, dynamic>> obtenerUsuarioPorNombreUsuario(
+    String nombreUsuario,
+  ) async {
+    final uri = Uri.parse('$url/usuario/query?nombreUsuario=$nombreUsuario');
+
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      throw Exception("No hay token disponible");
+    }
+
+    final response = await client.get(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> usuarios = jsonDecode(response.body);
+
+      if (usuarios.isNotEmpty) {
+        return usuarios.first;
+      } else {
+        throw Exception("Usuario no encontrado");
+      }
+    } else {
+      throw Exception("Error al obtener el usuario: ${response.statusCode}");
     }
   }
 }
