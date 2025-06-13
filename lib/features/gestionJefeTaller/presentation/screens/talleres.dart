@@ -30,7 +30,7 @@ class _MisTalleresScreenState extends State<MisTalleresScreen> {
       final url = StaticData.baseUrl;
 
       final response = await http.get(
-        Uri.parse('$url/taller'),
+        Uri.parse('$url/taller/propios'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
