@@ -74,6 +74,7 @@ class _EditarUsuarioDialogState extends State<EditarUsuarioDialog> {
                   value: "JEFE_TALLER",
                   child: Text("JEFE_TALLER"),
                 ),
+                DropdownMenuItem(value: "MECANICO", child: Text("MECANICO")),
               ],
               onChanged: (value) {
                 setState(() {

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:app_garagex/features/cuenta/presentation/bloc/cuenta_bloc.dart';
 import 'package:app_garagex/features/cuenta/presentation/screens/themeProvidere.dart';
 import 'package:app_garagex/features/datos_personales/presentation/screens/datos_personales_screen.dart';
+import 'package:app_garagex/features/gestionJefeTaller/presentation/screens/talleres.dart';
 import 'package:app_garagex/features/gestionUsuarioAdmin/presentation/screens/busquedaUsuario.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/app.dart';
@@ -173,6 +174,23 @@ class _CuentaScreenState extends State<CuentaScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (_) => const BuscarUsuarioScreen(),
+                    ),
+                  );
+                },
+              ),
+            ],
+
+            // Botón extra solo para jefe de taller
+            if (userRole == "JEFE_TALLER") ...[
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.garage),
+                title: const Text("Mis Talleres"),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const MisTalleresScreen(),
                     ),
                   );
                 },
