@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:app_garagex/features/data/static_data.dart';
+import 'package:app_garagex/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +28,10 @@ class _CrearTallerScreenState extends State<CrearTallerScreen> {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token") ?? '';
 
-      final url = Uri.parse('http://10.0.2.2/taller');
+      final jefeTaller = await AuthService.getUsuarioActual();
+
+      final url = Uri.parse('${StaticData.baseUrl}/taller');
+
       final response = await http.post(
         url,
         headers: {
@@ -40,12 +45,21 @@ class _CrearTallerScreenState extends State<CrearTallerScreen> {
           "email": _emailController.text.trim(),
           "latitud": double.tryParse(_latitudController.text.trim()) ?? 0.0,
           "longitud": double.tryParse(_longitudController.text.trim()) ?? 0.0,
+          "jefeTaller": {"id": jefeTaller["usuario"]["id"]},
         }),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         Navigator.pop(context, true);
-      } else {
+      }
+      else if (response.statusCode == 302) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error de duplicado en alguno de los campos'),
+          ),
+        );
+      }
+      else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error ${response.statusCode}: ${response.body}'),
@@ -53,9 +67,15 @@ class _CrearTallerScreenState extends State<CrearTallerScreen> {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error al guardar taller: $e')));
+      if (e.toString().contains("duplicate key")) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error de duplicado en alguno de los campos')));
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error al guardar taller: $e')));
+      }
     }
   }
 
