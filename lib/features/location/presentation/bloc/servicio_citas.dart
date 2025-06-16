@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:app_garagex/features/data/static_data.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CitaService {
   static String baseUrl = StaticData.baseUrl;
@@ -29,6 +30,33 @@ class CitaService {
       } catch (_) {
         throw Exception('Error ${response.statusCode}: ${response.body}');
       }
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> obtenerCitasDeUsuario(
+    int userId,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token");
+
+    final url = Uri.parse("${StaticData.baseUrl}/cita/$userId");
+
+    final response = await http.get(
+      url,
+      headers: {'Authorization': 'Bearer $token'},
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data is Map<String, dynamic> && data.containsKey('citas')) {
+        final List<dynamic> citas = data['citas'];
+        return citas.cast<Map<String, dynamic>>();
+      } else {
+        // Estructura inesperada
+        return [];
+      }
+    } else {
+      return [];
     }
   }
 }

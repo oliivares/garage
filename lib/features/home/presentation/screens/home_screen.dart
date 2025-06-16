@@ -1,5 +1,5 @@
+import 'package:app_garagex/features/location/presentation/bloc/servicio_citas.dart';
 import 'package:app_garagex/services/auth_service.dart';
-import 'package:app_garagex/services/cita_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/l10n/app_localizations.dart';
 
@@ -12,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic>? _usuario;
+  List<Map<String, dynamic>> _citas = [];
   bool _cargando = true;
   DateTime? _selectedDate;
   final TextEditingController _descripcionController = TextEditingController();
@@ -27,6 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
     if (response['success']) {
       setState(() {
         _usuario = response['usuario'];
+      });
+
+      final citas = await CitaService.obtenerCitasDeUsuario(_usuario!['id']);
+      print("CITAS CARGADAS:");
+      print(citas);
+
+      setState(() {
+        _citas = citas;
         _cargando = false;
       });
     } else {
@@ -60,33 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
     if (picked != null) {
       setState(() {
         _selectedDate = picked;
-      });
-    }
-  }
-
-  Future<void> _crearCita() async {
-    if (_selectedDate == null || _descripcionController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Completa todos los campos')),
-      );
-      return;
-    }
-
-    final response = await CitaService.crearCita(
-      descripcion: _descripcionController.text,
-      fechaHora: _selectedDate!,
-      vehiculoId: 1,
-      tallerId: 1,
-    );
-
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(response['message'].toString())));
-
-    if (response['success']) {
-      setState(() {
-        _descripcionController.clear();
-        _selectedDate = null;
       });
     }
   }
@@ -190,10 +172,41 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 30),
 
-                      // Campo de descripción
-                      const SizedBox(height: 20),
+                      // Título de citas
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Tus citas",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      // Lista de citas
+                      ..._citas.map(
+                        (cita) => Card(
+                          elevation: 3,
+                          margin: const EdgeInsets.symmetric(vertical: 6),
+                          child: ListTile(
+                            leading: const Icon(
+                              Icons.calendar_today,
+                              color: Colors.deepOrangeAccent,
+                            ),
+                            title: Text(
+                              cita['descripcion'] ?? 'Sin descripción',
+                            ),
+                            subtitle: Text(
+                              "Fecha: ${cita['fechaHoraCita'] ?? ''}\nEstado: ${cita['estado'] ?? ''}",
+                            ),
+                            isThreeLine: true,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

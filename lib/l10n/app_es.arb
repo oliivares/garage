@@ -57,5 +57,6 @@
   "vehicle": "Vehiculo",
   "deleteVehicle": "¿Estás seguro de que deseas eliminar este vehículo?",
   "deleteConfirmation": "Vehículo eliminado correctamente",
-  "manageUsers": "Gestionar usuarios"
+  "manageUsers": "Gestionar usuarios",
+  "yourappointments": "Tus citas"
 }

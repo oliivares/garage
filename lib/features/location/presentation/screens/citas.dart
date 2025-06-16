@@ -19,11 +19,8 @@ class _CitasScreenState extends State<CitasScreen> {
   final TextEditingController _solucionController = TextEditingController();
 
   DateTime? _fechaHoraCita;
-  String? _estadoSeleccionado;
   List<Map<String, dynamic>> _vehiculosUsuario = [];
   Map<String, dynamic>? _vehiculoSeleccionado;
-
-  final List<String> _estados = ['PENDIENTE', 'CONFIRMADA', 'CANCELADA'];
 
   @override
   void initState() {
