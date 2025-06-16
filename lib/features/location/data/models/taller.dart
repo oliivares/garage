@@ -4,7 +4,7 @@ class Taller {
   final String direccion;
   final double latitud;
   final double longitud;
-  final String? telefono;
+  final int telefono;
   final String? email;
 
   Taller({
@@ -13,7 +13,7 @@ class Taller {
     required this.direccion,
     required this.latitud,
     required this.longitud,
-    this.telefono,
+    required this.telefono,
     this.email,
   });
 
@@ -24,7 +24,7 @@ class Taller {
       direccion: json['direccion'],
       latitud: json['latitud'].toDouble(),
       longitud: json['longitud'].toDouble(),
-      telefono: json['telefono']?.toString(),
+      telefono: json['telefono'],
       email: json['email'],
     );
   }

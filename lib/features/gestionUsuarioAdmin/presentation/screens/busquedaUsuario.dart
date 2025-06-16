@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/features/gestionUsuarioAdmin/presentation/screens/editarUsuarioAdmin.dart';
 import 'package:app_garagex/services/usuarioSearh_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BuscarUsuarioScreen extends StatefulWidget {
   const BuscarUsuarioScreen({super.key});
@@ -16,10 +18,24 @@ class _BuscarUsuarioScreenState extends State<BuscarUsuarioScreen> {
 
   late UsuarioSearchService _searchService;
 
+  String rolActualUsuario = '';
+
   @override
   void initState() {
     super.initState();
     _searchService = UsuarioSearchService(client: createIOClient());
+    _loadRolActualUsuario();
+  }
+
+  void _loadRolActualUsuario() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userJson = prefs.getString("usuario");
+    if (userJson != null) {
+      final user = jsonDecode(userJson);
+      setState(() {
+        rolActualUsuario = user['rol'] ?? '';
+      });
+    }
   }
 
   void _onChanged(String query) async {
@@ -85,6 +101,7 @@ class _BuscarUsuarioScreenState extends State<BuscarUsuarioScreen> {
                             builder:
                                 (context) => EditarUsuarioDialog(
                                   usuario: usuarioCompleto,
+                                  rolActualUsuario: rolActualUsuario,
                                 ),
                           );
                         } catch (e, stackTrace) {

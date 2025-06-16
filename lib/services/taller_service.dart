@@ -26,4 +26,31 @@ class TalleresService {
       throw Exception('Error al cargar los talleres');
     }
   }
+
+  Future<bool> actualizarTaller(Taller taller) async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token") ?? '';
+
+    final response = await http.put(
+      Uri.parse('$url/taller/${taller.id}'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'nombre': taller.nombre,
+        'direccion': taller.direccion,
+        'telefono': taller.telefono,
+        'email': taller.email,
+        'latitud': taller.latitud,
+        'longitud': taller.longitud,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception('Error al actualizar el taller: ${response.body}');
+    }
+  }
 }

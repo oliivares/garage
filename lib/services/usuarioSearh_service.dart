@@ -155,7 +155,6 @@ class UsuarioSearchService {
   }
 }
 
-// Cliente HTTP con soporte para cookies
 IOClient createIOClient() {
   final httpClient =
       HttpClient()

@@ -2,9 +2,6 @@
 import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
-// ignore_for_file: type=lint
-
-/// The translations for Spanish Castilian (`es`).
 class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
@@ -171,7 +168,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get vehicle => 'Vehiculo';
 
   @override
-  String get deleteVehicle => '¿Estás seguro de que deseas eliminar este vehículo?';
+  String get deleteVehicle =>
+      '¿Estás seguro de que deseas eliminar este vehículo?';
 
   @override
   String get deleteConfirmation => 'Vehicle successfully removed';

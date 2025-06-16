@@ -110,7 +110,7 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
                 Icons.phone,
                 controller.telefonoController,
                 TextInputType.number,
-                [FilteringTextInputFormatter.digitsOnly], // 👉 SOLO NÚMEROS
+                [FilteringTextInputFormatter.digitsOnly],
               ),
               const SizedBox(height: 16),
               GestureDetector(
@@ -142,8 +142,7 @@ class _DatosPersonalesScreenState extends State<DatosPersonalesScreen> {
                 child: const Text(
                   "Actualizar Datos",
                   style: TextStyle(
-                    color:
-                        Colors.deepOrange, // 👉 aquí le das el color al texto
+                    color: Colors.deepOrange,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

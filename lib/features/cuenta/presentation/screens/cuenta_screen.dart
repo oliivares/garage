@@ -174,9 +174,7 @@ class _CuentaScreenState extends State<CuentaScreen> {
               icon: const Icon(Icons.picture_as_pdf),
               label: const Text("Ver manual en PDF"),
             ),
-
-            // Botón extra solo para administrador
-            if (userRole == "ADMINISTRADOR") ...[
+            if (userRole == "ADMINISTRADOR" || userRole == "JEFE_TALLER") ...[
               const Divider(),
               ListTile(
                 leading: const Icon(Icons.search),

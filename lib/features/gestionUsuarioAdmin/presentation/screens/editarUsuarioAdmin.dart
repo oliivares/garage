@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 
 class EditarUsuarioDialog extends StatefulWidget {
   final Map<String, dynamic> usuario;
+  final String
+  rolActualUsuario; // Nuevo parámetro para saber rol de quien edita
 
-  const EditarUsuarioDialog({super.key, required this.usuario});
+  const EditarUsuarioDialog({
+    super.key,
+    required this.usuario,
+    required this.rolActualUsuario,
+  });
 
   @override
   State<EditarUsuarioDialog> createState() => _EditarUsuarioDialogState();
@@ -15,7 +21,7 @@ class _EditarUsuarioDialogState extends State<EditarUsuarioDialog> {
   late TextEditingController nombreUsuarioCtrl;
   late TextEditingController emailCtrl;
   late TextEditingController telefonoCtrl;
-  String rolSeleccionado = "CLIENTE";
+  late String rolSeleccionado;
 
   late final UsuarioSearchService _searchService;
 
@@ -37,8 +43,27 @@ class _EditarUsuarioDialogState extends State<EditarUsuarioDialog> {
 
   bool _cambioRol() => widget.usuario['rol'] != rolSeleccionado;
 
+  List<DropdownMenuItem<String>> _getOpcionesRol() {
+    if (widget.rolActualUsuario == "ADMINISTRADOR") {
+      return const [
+        DropdownMenuItem(value: "CLIENTE", child: Text("CLIENTE")),
+        DropdownMenuItem(value: "JEFE_TALLER", child: Text("JEFE_TALLER")),
+      ];
+    } else if (widget.rolActualUsuario == "JEFE_TALLER") {
+      return const [
+        DropdownMenuItem(value: "CLIENTE", child: Text("CLIENTE")),
+        DropdownMenuItem(value: "MECANICO", child: Text("MECANICO")),
+      ];
+    } else {
+      // Si otro rol, no permite cambiar rol
+      return [];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final opcionesRol = _getOpcionesRol();
+
     return AlertDialog(
       title: const Text("Editar usuario"),
       content: SingleChildScrollView(
@@ -66,21 +91,18 @@ class _EditarUsuarioDialogState extends State<EditarUsuarioDialog> {
               enabled: false,
             ),
             const SizedBox(height: 10),
-            DropdownButton<String>(
-              value: rolSeleccionado,
-              items: const [
-                DropdownMenuItem(value: "CLIENTE", child: Text("CLIENTE")),
-                DropdownMenuItem(
-                  value: "JEFE_TALLER",
-                  child: Text("JEFE_TALLER"),
-                ),
-              ],
-              onChanged: (value) {
-                setState(() {
-                  rolSeleccionado = value!;
-                });
-              },
-            ),
+            if (opcionesRol.isNotEmpty)
+              DropdownButton<String>(
+                value: rolSeleccionado,
+                items: opcionesRol,
+                onChanged: (value) {
+                  setState(() {
+                    rolSeleccionado = value!;
+                  });
+                },
+              )
+            else
+              const Text("No tienes permiso para cambiar el rol."),
           ],
         ),
       ),
@@ -89,28 +111,29 @@ class _EditarUsuarioDialogState extends State<EditarUsuarioDialog> {
           onPressed: () => Navigator.pop(context),
           child: const Text("Cancelar"),
         ),
-        ElevatedButton(
-          onPressed: () async {
-            if (!_cambioRol()) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("No hay cambios en el rol")),
+        if (opcionesRol.isNotEmpty)
+          ElevatedButton(
+            onPressed: () async {
+              if (!_cambioRol()) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("No hay cambios en el rol")),
+                );
+                return;
+              }
+
+              final resultado = await _searchService.cambiarRolUsuario(
+                nombreUsuario: widget.usuario['nombreUsuario'],
+                nuevoRol: rolSeleccionado,
               );
-              return;
-            }
 
-            final resultado = await _searchService.cambiarRolUsuario(
-              nombreUsuario: widget.usuario['nombreUsuario'],
-              nuevoRol: rolSeleccionado,
-            );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(resultado["message"])));
 
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(resultado["message"])));
-
-            if (resultado["success"]) Navigator.pop(context);
-          },
-          child: const Text("Guardar cambios"),
-        ),
+              if (resultado["success"]) Navigator.pop(context);
+            },
+            child: const Text("Guardar cambios"),
+          ),
       ],
     );
   }

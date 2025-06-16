@@ -65,7 +65,11 @@ class TallerInfoDialog extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ElevatedButton.icon(
-                            onPressed: () => _llamar(context, taller.telefono!),
+                            onPressed:
+                                () => _llamar(
+                                  context,
+                                  taller.telefono! as String,
+                                ),
                             icon: const Icon(Icons.phone),
                             label: Text(AppLocalizations.of(context)!.call),
                             style: ElevatedButton.styleFrom(

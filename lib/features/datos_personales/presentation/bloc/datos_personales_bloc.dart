@@ -9,7 +9,6 @@ class DatosPersonalesController {
   final emailController = TextEditingController();
   final telefonoController = TextEditingController();
 
-  // Validación de correo
   bool validarEmail(String email) {
     final regex = RegExp(r'^[^@]+@[^@]+\.(com|es|org)$');
     return regex.hasMatch(email.trim());
@@ -30,7 +29,6 @@ class DatosPersonalesController {
   }
 
   Future<bool> actualizarDatos(Function(String) mostrarMensaje) async {
-    // Validar correo antes de actualizar
     if (!validarEmail(emailController.text)) {
       mostrarMensaje(
         "El correo debe contener un '@' y terminar en .com, .es o .org",
@@ -38,7 +36,6 @@ class DatosPersonalesController {
       return false;
     }
 
-    // Obtener el usuario actual para saber su rol
     final usuarioActualResult = await AuthService.getUsuarioActual();
     if (usuarioActualResult["success"] != true) {
       mostrarMensaje(
