@@ -26,11 +26,29 @@ class AuthService {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString("token", token);
 
-        return {
-          "success": true,
-          "message": "Inicio de sesión exitoso",
-          "token": token,
-        };
+        // Obtener datos del usuario actual
+        final userResponse = await getUsuarioActual();
+
+        if (userResponse["success"] == true &&
+            userResponse["usuario"] != null) {
+          final usuario = userResponse["usuario"];
+          final int userId = usuario["id"];
+
+          // Guardar userId en SharedPreferences
+          await prefs.setString("userId", userId.toString());
+
+          return {
+            "success": true,
+            "message": "Inicio de sesión exitoso",
+            "token": token,
+            "userId": userId,
+          };
+        } else {
+          return {
+            "success": false,
+            "message": "Error al obtener datos del usuario después del login",
+          };
+        }
       } else {
         return {"success": false, "message": response.body};
       }

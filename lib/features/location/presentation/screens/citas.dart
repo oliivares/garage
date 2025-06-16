@@ -16,37 +16,13 @@ class _CitasScreenState extends State<CitasScreen> {
 
   final TextEditingController _descripcionController = TextEditingController();
   final TextEditingController _solucionController = TextEditingController();
+  final TextEditingController _usuarioIdController = TextEditingController();
   final TextEditingController _vehiculoIdController = TextEditingController();
 
   DateTime? _fechaHoraCita;
-  int? _usuarioId;
+  String? _estadoSeleccionado;
 
-  @override
-  void initState() {
-    super.initState();
-    _cargarUsuarioId();
-  }
-
-  Future<void> _cargarUsuarioId() async {
-    final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getInt('userId');
-    if (userId != null) {
-      setState(() {
-        _usuarioId = userId;
-      });
-    } else {
-      debugPrint('No se encontró el ID del usuario.');
-    }
-  }
-
-  Future<String> obtenerToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token');
-    if (token == null) {
-      throw Exception('No se encontró token. Por favor inicia sesión.');
-    }
-    return token;
-  }
+  final List<String> _estados = ['PENDIENTE', 'CONFIRMADA', 'CANCELADA'];
 
   Future<void> _seleccionarFechaHora() async {
     final DateTime? fecha = await showDatePicker(
@@ -74,6 +50,15 @@ class _CitasScreenState extends State<CitasScreen> {
     });
   }
 
+  Future<String> obtenerToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token == null) {
+      throw Exception('No se encontró token. Por favor inicia sesión.');
+    }
+    return token;
+  }
+
   Future<void> _enviarFormulario() async {
     if (_formKey.currentState!.validate()) {
       if (_fechaHoraCita == null) {
@@ -83,33 +68,20 @@ class _CitasScreenState extends State<CitasScreen> {
         return;
       }
 
-      if (_usuarioId == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No se pudo obtener el ID del usuario')),
-        );
-        return;
-      }
-
-      int? vehiculoId = int.tryParse(_vehiculoIdController.text);
-      if (vehiculoId == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('ID de vehículo inválido')),
-        );
-        return;
-      }
-
-      final nuevaCita = {
-        'descripcion': _descripcionController.text,
-        'fechaHoraCita': _fechaHoraCita!.toIso8601String().split('.').first,
-        'estado': 'PENDIENTE',
-        'solucion': _solucionController.text,
-        'vehiculo': {'id': vehiculoId},
-        'taller': {'id': widget.tallerId},
-        'usuario': {'id': _usuarioId},
-      };
-
       try {
-        String token = await obtenerToken();
+        final datos = await obtenerTokenYUsuario();
+        final token = datos['token']!;
+        final userId = int.parse(datos['userId']!);
+
+        final nuevaCita = {
+          'descripcion': _descripcionController.text,
+          'fechaHoraCita': _fechaHoraCita!.toIso8601String().split('.').first,
+          'estado': 'PENDIENTE', // Estado por defecto
+          'solucion': _solucionController.text,
+          'usuario': {'id': userId},
+          'vehiculo': {'id': int.parse(_vehiculoIdController.text)},
+          'taller': {'id': widget.tallerId},
+        };
 
         final respuesta = await CitaService.crearCita(nuevaCita, token);
 
@@ -126,6 +98,18 @@ class _CitasScreenState extends State<CitasScreen> {
         ).showSnackBar(SnackBar(content: Text('Error al guardar la cita: $e')));
       }
     }
+  }
+
+  Future<Map<String, String>> obtenerTokenYUsuario() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    final userId = prefs.getString('userId');
+
+    if (token == null || userId == null) {
+      throw Exception('Faltan credenciales. Por favor inicia sesión.');
+    }
+
+    return {'token': token, 'userId': userId};
   }
 
   @override
@@ -167,6 +151,11 @@ class _CitasScreenState extends State<CitasScreen> {
                 decoration: const InputDecoration(labelText: 'ID del Vehículo'),
                 validator:
                     (value) => value!.isEmpty ? 'Campo obligatorio' : null,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Taller ID: ${widget.tallerId}',
+                style: const TextStyle(color: Colors.grey),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
