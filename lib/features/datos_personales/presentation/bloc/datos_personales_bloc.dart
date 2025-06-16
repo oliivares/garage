@@ -9,6 +9,12 @@ class DatosPersonalesController {
   final emailController = TextEditingController();
   final telefonoController = TextEditingController();
 
+  // Validación de correo
+  bool validarEmail(String email) {
+    final regex = RegExp(r'^[^@]+@[^@]+\.(com|es|org)$');
+    return regex.hasMatch(email.trim());
+  }
+
   Future<void> cargarDatosUsuario(Function(String) mostrarMensaje) async {
     final result = await AuthService.getUsuarioActual();
 
@@ -24,6 +30,14 @@ class DatosPersonalesController {
   }
 
   Future<bool> actualizarDatos(Function(String) mostrarMensaje) async {
+    // Validar correo antes de actualizar
+    if (!validarEmail(emailController.text)) {
+      mostrarMensaje(
+        "El correo debe contener un '@' y terminar en .com, .es o .org",
+      );
+      return false;
+    }
+
     // Obtener el usuario actual para saber su rol
     final usuarioActualResult = await AuthService.getUsuarioActual();
     if (usuarioActualResult["success"] != true) {
@@ -34,7 +48,6 @@ class DatosPersonalesController {
     }
 
     final usuarioActual = usuarioActualResult["usuario"];
-    // Obtener el rol actual y si es CLIENTE, mantenerlo
     final rolActual = usuarioActual["rol"] ?? "CLIENTE";
 
     final result = await AuthService.actualizarUsuario(
@@ -42,7 +55,7 @@ class DatosPersonalesController {
       nombreUsuario: usuarioController.text.trim(),
       email: emailController.text.trim(),
       telefono: telefonoController.text.trim(),
-      rol: rolActual, // Mantener el rol actual
+      rol: rolActual,
     );
 
     if (result["success"]) {
@@ -84,7 +97,7 @@ class DatosPersonalesController {
     if (!RegExp(r'[0-9]').hasMatch(contrasena)) {
       errores.add("Debe contener al menos un número");
     }
-    if (!RegExp(r'[!@#\$&*~^%()_\-+=<>?/.,:;{}[\]|]').hasMatch(contrasena)) {
+    if (!RegExp(r'[!@#\$&*~^%()_\-+=<>?/.,:;{}\[\]|]').hasMatch(contrasena)) {
       errores.add("Debe contener al menos un símbolo");
     }
 

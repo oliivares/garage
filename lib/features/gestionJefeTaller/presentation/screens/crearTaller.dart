@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:app_garagex/features/data/static_data.dart';
 import 'package:app_garagex/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +21,12 @@ class _CrearTallerScreenState extends State<CrearTallerScreen> {
   final _emailController = TextEditingController();
   final _latitudController = TextEditingController();
   final _longitudController = TextEditingController();
+
+  // Validar email con @ y dominio correcto
+  bool validarEmail(String email) {
+    final regex = RegExp(r'^[^@]+@[^@]+\.(com|es|org)$');
+    return regex.hasMatch(email.trim());
+  }
 
   Future<void> _guardarTaller() async {
     if (!_formKey.currentState!.validate()) return;
@@ -51,15 +58,13 @@ class _CrearTallerScreenState extends State<CrearTallerScreen> {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         Navigator.pop(context, true);
-      }
-      else if (response.statusCode == 302) {
+      } else if (response.statusCode == 302) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Error de duplicado en alguno de los campos'),
           ),
         );
-      }
-      else {
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Error ${response.statusCode}: ${response.body}'),
@@ -67,15 +72,16 @@ class _CrearTallerScreenState extends State<CrearTallerScreen> {
         );
       }
     } catch (e) {
-      if (e.toString().contains("duplicate key")) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error de duplicado en alguno de los campos')));
-      } else {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error al guardar taller: $e')));
-      }
+      final isDuplicate = e.toString().contains("duplicate key");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            isDuplicate
+                ? 'Error de duplicado en alguno de los campos'
+                : 'Error al guardar taller: $e',
+          ),
+        ),
+      );
     }
   }
 
@@ -103,22 +109,46 @@ class _CrearTallerScreenState extends State<CrearTallerScreen> {
                 controller: _telefonoController,
                 decoration: const InputDecoration(labelText: 'Teléfono'),
                 keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (v) => v!.isEmpty ? 'Campo obligatorio' : null,
               ),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
-                validator: (v) => v!.isEmpty ? 'Campo obligatorio' : null,
+                validator: (v) {
+                  if (v == null || v.isEmpty) {
+                    return 'Campo obligatorio';
+                  } else if (!validarEmail(v)) {
+                    return 'Email no válido (.com, .es, .org)';
+                  }
+                  return null;
+                },
               ),
               TextFormField(
                 controller: _latitudController,
                 decoration: const InputDecoration(labelText: 'Latitud'),
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.numberWithOptions(
+                  decimal: true,
+                  signed: true,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^[-]?[0-9]*[.]?[0-9]*$'),
+                  ),
+                ],
               ),
               TextFormField(
                 controller: _longitudController,
                 decoration: const InputDecoration(labelText: 'Longitud'),
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.numberWithOptions(
+                  decimal: true,
+                  signed: true,
+                ),
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'^[-]?[0-9]*[.]?[0-9]*$'),
+                  ),
+                ],
               ),
               const SizedBox(height: 20),
               ElevatedButton(
