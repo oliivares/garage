@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:app_garagex/features/cuenta/presentation/bloc/cuenta_bloc.dart';
+import 'package:app_garagex/features/cuenta/presentation/screens/ayuda.dart';
+import 'package:app_garagex/features/cuenta/presentation/screens/manual_pdf.dart';
 import 'package:app_garagex/features/cuenta/presentation/screens/themeProvidere.dart';
 import 'package:app_garagex/features/datos_personales/presentation/screens/datos_personales_screen.dart';
 import 'package:app_garagex/features/gestionJefeTaller/presentation/screens/talleres.dart';
@@ -161,6 +163,16 @@ class _CuentaScreenState extends State<CuentaScreen> {
               onTap: () {
                 themeProvider.toggleTheme();
               },
+            ),
+            TextButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ManualPdfScreen()),
+                );
+              },
+              icon: const Icon(Icons.picture_as_pdf),
+              label: const Text("Ver manual en PDF"),
             ),
 
             // Botón extra solo para administrador
