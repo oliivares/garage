@@ -32,6 +32,8 @@ class InsertarUsuarioService {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         return {"success": true, "message": "Usuario registrado correctamente"};
+      } else if (response.statusCode == 302) {
+        return {"success": false, "message": "Usuario con valores ya registrados"};
       } else {
         return {"success": false, "message": responseBody};
       }

@@ -35,6 +35,10 @@ class RegisterBloc {
       return {'success': false, 'message': 'Las contraseñas no coinciden'};
     }
 
+    if (phone.length != 9) {
+      return {'success': false, 'message': 'El teléfono debe tener 9 dígitos'};
+    }
+
     final errores = validarContrasenaSegura(password);
     if (errores.isNotEmpty) {
       return {'success': false, 'message': errores.join('\n')};
