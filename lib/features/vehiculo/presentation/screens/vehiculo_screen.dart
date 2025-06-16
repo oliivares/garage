@@ -44,7 +44,11 @@ class _VehiculosScreenState extends State<VehiculosScreen> {
           _loading
               ? const Center(child: CircularProgressIndicator())
               : FutureBuilder<List<Map<String, dynamic>>>(
-                future: controller.cargarVehiculos(usuarioId!),
+                future:
+                    usuarioId != null
+                        ? controller.cargarVehiculos(usuarioId!)
+                        : Future.value([]),
+
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());

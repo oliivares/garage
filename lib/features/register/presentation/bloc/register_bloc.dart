@@ -23,10 +23,11 @@ class RegisterBloc {
       };
     }
 
-    if (!email.toLowerCase().endsWith('@gmail.com')) {
+    if (!esCorreoValido(email)) {
       return {
         'success': false,
-        'message': 'El correo debe ser un @gmail.com válido',
+        'message':
+            'El correo debe contener un @ y terminar en .com, .es o .org',
       };
     }
 
@@ -36,10 +37,7 @@ class RegisterBloc {
 
     final errores = validarContrasenaSegura(password);
     if (errores.isNotEmpty) {
-      return {
-        'success': false,
-        'message': errores.join('\n'), // Mostrar todos los errores juntos
-      };
+      return {'success': false, 'message': errores.join('\n')};
     }
 
     return await InsertarUsuarioService.insertarUsuario(
@@ -50,6 +48,14 @@ class RegisterBloc {
       telefono: phone.isEmpty ? null : phone,
     );
   }
+}
+
+bool esCorreoValido(String correo) {
+  final RegExp regex = RegExp(
+    r'^[\w\.-]+@[\w\.-]+\.(com|es|org)$',
+    caseSensitive: false,
+  );
+  return regex.hasMatch(correo.trim());
 }
 
 List<String> validarContrasenaSegura(String contrasena) {
