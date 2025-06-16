@@ -142,6 +142,59 @@ class AuthService {
     }
   }
 
+  static Future<Map<String, dynamic>> actualizarUsuarioPorId({
+    required int id,
+    required String nombre,
+    required String email,
+    required String telefono,
+    required String rol,
+  }) async {
+    final url = Uri.parse("$_baseUrl/usuario/$id");
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString("token");
+
+    if (token == null) {
+      return {"success": false, "message": "No hay token disponible"};
+    }
+
+    final data = {
+      "id": id,
+      "nombre": nombre,
+      "email": email,
+      "telefono": int.tryParse(telefono),
+      "rol": rol,
+    };
+
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(data),
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          "success": true,
+          "usuario": jsonDecode(response.body),
+          "message": "Usuario actualizado correctamente",
+        };
+      } else {
+        return {
+          "success": false,
+          "message": "Error al actualizar: ${response.body}",
+        };
+      }
+    } catch (e) {
+      return {
+        "success": false,
+        "message": "Error de conexión: ${e.toString()}",
+      };
+    }
+  }
+
   static Future<Map<String, dynamic>> cambiarContrasena(
     String actual,
     String nueva,

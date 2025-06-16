@@ -12,8 +12,10 @@ class UsuarioSearchService {
 
   UsuarioSearchService({required this.client});
 
-  // Busca usuarios por nombre de usuario (retorna lista de strings)
   Future<List<String>> buscarUsuariosPorNombreUsuario(String texto) async {
+    final prefs = await SharedPreferences.getInstance();
+    final usuarioActual = prefs.getString('nombreUsuario');
+
     final uri = Uri.parse(
       "$url/usuario/buscar-por-nombre-usuario?texto=$texto",
     );
@@ -21,7 +23,13 @@ class UsuarioSearchService {
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = jsonDecode(response.body);
+
       return jsonList
+          .where(
+            (item) =>
+                item['rol'] != 'ADMINISTRADOR' &&
+                item['nombreUsuario'] != "admin",
+          )
           .map<String>((item) => item['nombreUsuario'] as String)
           .toList();
     } else {
