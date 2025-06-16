@@ -11,7 +11,7 @@
     
     <application
         android:name="${applicationName}"
-        android:label="garage"
+        android:label="Garage X"
         android:icon="@mipmap/ic_launcher">
 
         <!-- API Key de Google Maps -->
