@@ -1,0 +1,22 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Flutter Build Windows",
+        "type": "shell",
+        "command": "flutter",
+        "args": ["build", "windows"],
+        "group": "build"
+      },
+      {
+        "label": "Crear Instalador Inno Setup",
+        "type": "shell",
+        "command": "\"C:\\InnoSetup6\\ISCC.exe\"",
+        "args": ["installer.iss"],
+        "group": "build",
+        "dependsOn": "Flutter Build Windows",
+        "problemMatcher": []
+      }
+    ]
+  }
+  
