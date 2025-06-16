@@ -1,4 +1,5 @@
 class Taller {
+  final int id;
   final String nombre;
   final String direccion;
   final double latitud;
@@ -7,6 +8,7 @@ class Taller {
   final String? email;
 
   Taller({
+    required this.id,
     required this.nombre,
     required this.direccion,
     required this.latitud,
@@ -17,6 +19,7 @@ class Taller {
 
   factory Taller.fromJson(Map<String, dynamic> json) {
     return Taller(
+      id: json['id'],
       nombre: json['nombre'],
       direccion: json['direccion'],
       latitud: json['latitud'].toDouble(),

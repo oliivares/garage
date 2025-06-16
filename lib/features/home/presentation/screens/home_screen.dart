@@ -193,30 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(height: 20),
 
                       // Campo de descripción
-                      TextField(
-                        controller: _descripcionController,
-                        maxLines: 3,
-                        decoration: const InputDecoration(
-                          labelText: 'Descripción',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
                       const SizedBox(height: 20),
-
-                      // Botón para crear cita
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: _crearCita,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrangeAccent,
-                          ),
-                          child: const Text(
-                            'Crear Cita',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),

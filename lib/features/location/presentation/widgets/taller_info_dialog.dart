@@ -1,3 +1,4 @@
+import 'package:app_garagex/features/location/presentation/screens/citas.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/features/location/data/models/taller.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -57,18 +58,46 @@ class TallerInfoDialog extends StatelessWidget {
                   "${AppLocalizations.of(context)!.phone}: ${taller.telefono}",
                 ),
                 const SizedBox(height: 12),
-                Row(
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ElevatedButton.icon(
-                      onPressed: () => _llamar(context, taller.telefono!),
-                      icon: const Icon(Icons.phone),
-                      label: Text(AppLocalizations.of(context)!.call),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () => _llamar(context, taller.telefono!),
+                            icon: const Icon(Icons.phone),
+                            label: Text(AppLocalizations.of(context)!.call),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) =>
+                                          CitasScreen(tallerId: taller.id),
+                                ),
+                              );
+                            },
+
+                            icon: const Icon(Icons.calendar_today),
+                            label: const Text('Citar'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              foregroundColor: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(height: 8),
                     ElevatedButton.icon(
                       onPressed: null, // Deshabilitado
                       icon: const Icon(Icons.chat),
