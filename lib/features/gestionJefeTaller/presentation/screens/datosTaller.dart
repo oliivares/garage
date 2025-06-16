@@ -1,22 +1,16 @@
 import 'package:app_garagex/features/data/static_data.dart';
+import 'package:app_garagex/features/gestionJefeTaller/presentation/screens/editarTaller.dart';
 import 'package:app_garagex/services/taller_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/features/location/data/models/taller.dart';
 
-class EditarTallerScreen extends StatefulWidget {
-  final Taller taller;
-
-  const EditarTallerScreen({super.key, required this.taller});
-
-  @override
-  State<EditarTallerScreen> createState() => _EditarTallerScreenState();
-}
-
-class _EditarTallerScreenState extends State<EditarTallerScreen> {
+class EditarTallerScreenState extends State<EditarTallerScreen> {
   late TextEditingController nombreCtrl;
   late TextEditingController direccionCtrl;
   late TextEditingController emailCtrl;
   late TextEditingController telefonoCtrl;
+  late TextEditingController latitudCtrl;
+  late TextEditingController longitudCtrl;
 
   @override
   void initState() {
@@ -27,13 +21,27 @@ class _EditarTallerScreenState extends State<EditarTallerScreen> {
     telefonoCtrl = TextEditingController(
       text: widget.taller.telefono.toString(),
     );
+    latitudCtrl = TextEditingController(text: widget.taller.latitud.toString());
+    longitudCtrl = TextEditingController(
+      text: widget.taller.longitud.toString(),
+    );
   }
 
   Future<void> _guardarCambios() async {
     final telefonoParsed = int.tryParse(telefonoCtrl.text);
+    final latitudParsed = double.tryParse(latitudCtrl.text);
+    final longitudParsed = double.tryParse(longitudCtrl.text);
+
     if (telefonoParsed == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Teléfono inválido. Debe ser numérico.")),
+      );
+      return;
+    }
+
+    if (latitudParsed == null || longitudParsed == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Latitud o longitud inválidas.")),
       );
       return;
     }
@@ -44,8 +52,8 @@ class _EditarTallerScreenState extends State<EditarTallerScreen> {
       direccion: direccionCtrl.text,
       email: emailCtrl.text,
       telefono: telefonoParsed,
-      latitud: widget.taller.latitud,
-      longitud: widget.taller.longitud,
+      latitud: latitudParsed,
+      longitud: longitudParsed,
     );
 
     try {
@@ -89,6 +97,16 @@ class _EditarTallerScreenState extends State<EditarTallerScreen> {
               controller: telefonoCtrl,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'Teléfono'),
+            ),
+            TextField(
+              controller: latitudCtrl,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              decoration: const InputDecoration(labelText: 'Latitud'),
+            ),
+            TextField(
+              controller: longitudCtrl,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              decoration: const InputDecoration(labelText: 'Longitud'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

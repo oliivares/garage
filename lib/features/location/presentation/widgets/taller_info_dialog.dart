@@ -52,7 +52,7 @@ class TallerInfoDialog extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text("${AppLocalizations.of(context)!.email}: ${taller.email}"),
               ],
-              if (taller.telefono != null) ...[
+              ...[
                 const SizedBox(height: 8),
                 Text(
                   "${AppLocalizations.of(context)!.phone}: ${taller.telefono}",
@@ -66,10 +66,8 @@ class TallerInfoDialog extends StatelessWidget {
                         Expanded(
                           child: ElevatedButton.icon(
                             onPressed:
-                                () => _llamar(
-                                  context,
-                                  taller.telefono! as String,
-                                ),
+                                () =>
+                                    _llamar(context, taller.telefono as String),
                             icon: const Icon(Icons.phone),
                             label: Text(AppLocalizations.of(context)!.call),
                             style: ElevatedButton.styleFrom(

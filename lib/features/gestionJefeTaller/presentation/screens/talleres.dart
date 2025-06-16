@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:app_garagex/features/data/static_data.dart';
 import 'package:app_garagex/features/gestionJefeTaller/presentation/screens/crearTaller.dart';
-import 'package:app_garagex/features/gestionJefeTaller/presentation/screens/datosTaller.dart';
+import 'package:app_garagex/features/gestionJefeTaller/presentation/screens/editarTaller.dart';
 import 'package:app_garagex/features/location/data/models/taller.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -55,37 +55,6 @@ class _MisTalleresScreenState extends State<MisTalleresScreen> {
     }
   }
 
-  void _mostrarDetallesTaller(Taller taller) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: Text('Detalles de Taller'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Nombre: ${taller.nombre}'),
-              const SizedBox(height: 8),
-              Text('Dirección: ${taller.direccion}'),
-              const SizedBox(height: 8),
-              Text('Email: ${taller.email}'),
-              const SizedBox(height: 8),
-              Text('Teléfono: ${taller.telefono}'),
-              // Puedes agregar más campos si el modelo los tiene
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cerrar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,8 +101,7 @@ class _MisTalleresScreenState extends State<MisTalleresScreen> {
                                     (_) => EditarTallerScreen(taller: taller),
                               ),
                             );
-                            if (resultado == true)
-                              _fetchTalleres(); // refresca la lista
+                            if (resultado == true) _fetchTalleres();
                           },
                         ),
                       ],
