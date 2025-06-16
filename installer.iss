@@ -4,7 +4,7 @@ AppVersion=1.0.0
 DefaultDirName={pf}\Garage X
 DefaultGroupName=Garage X
 OutputDir=dist
-OutputBaseFilename=GarageX_Installer
+OutputBaseFilename=GarageX_setup
 SetupIconFile=windows\runner\resources\app_icon.ico
 
 [Files]
