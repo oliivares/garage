@@ -1,5 +1,5 @@
 import 'package:app_garagex/features/cuenta/presentation/screens/cuenta_screen.dart';
-import 'package:app_garagex/features/registro_citas/presentation/screens/registro_screen.dart';
+import 'package:app_garagex/features/registro_citas/presentation/screens/cita_screen.dart';
 import 'package:app_garagex/features/vehiculo/presentation/screens/vehiculo_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:app_garagex/features/home/presentation/screens/home_screen.dart';
