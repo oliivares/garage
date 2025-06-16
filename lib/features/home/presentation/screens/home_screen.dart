@@ -14,7 +14,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic>? _usuario;
   List<Map<String, dynamic>> _citas = [];
   bool _cargando = true;
-  DateTime? _selectedDate;
 
   @override
   void initState() {
@@ -44,31 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(response['message'] ?? 'Error desconocido')),
       );
-    }
-  }
-
-  Future<void> _pickDate() async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2030),
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Colors.deepOrangeAccent,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (picked != null) {
-      setState(() {
-        _selectedDate = picked;
-      });
     }
   }
 
@@ -128,47 +102,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                           ],
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Mostrar fecha seleccionada
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.selecteddate,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          Text(
-                            _selectedDate != null
-                                ? "${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}"
-                                : AppLocalizations.of(context)!.none,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-
-                      // Botón para seleccionar fecha
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton.icon(
-                          onPressed: _pickDate,
-                          icon: const Icon(
-                            Icons.calendar_today,
-                            color: Colors.white,
-                          ),
-                          label: Text(
-                            AppLocalizations.of(context)!.selectdate,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrangeAccent,
-                          ),
                         ),
                       ),
                       const SizedBox(height: 30),
