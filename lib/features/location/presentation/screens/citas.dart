@@ -1,4 +1,5 @@
 import 'package:app_garagex/features/location/presentation/bloc/servicio_citas.dart';
+import 'package:app_garagex/services/vehiculo_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,13 +17,38 @@ class _CitasScreenState extends State<CitasScreen> {
 
   final TextEditingController _descripcionController = TextEditingController();
   final TextEditingController _solucionController = TextEditingController();
-  final TextEditingController _usuarioIdController = TextEditingController();
-  final TextEditingController _vehiculoIdController = TextEditingController();
 
   DateTime? _fechaHoraCita;
   String? _estadoSeleccionado;
+  List<Map<String, dynamic>> _vehiculosUsuario = [];
+  Map<String, dynamic>? _vehiculoSeleccionado;
 
   final List<String> _estados = ['PENDIENTE', 'CONFIRMADA', 'CANCELADA'];
+
+  @override
+  void initState() {
+    super.initState();
+    _cargarVehiculosUsuario();
+  }
+
+  Future<void> _cargarVehiculosUsuario() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userIdStr = prefs.getString("userId");
+      if (userIdStr == null) throw Exception("No hay userId");
+
+      final userId = int.parse(userIdStr);
+      final vehiculos = await VehiculoService.obtenerVehiculosDeUsuario(userId);
+
+      setState(() {
+        _vehiculosUsuario = vehiculos;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error al cargar vehículos: $e')));
+    }
+  }
 
   Future<void> _seleccionarFechaHora() async {
     final DateTime? fecha = await showDatePicker(
@@ -68,6 +94,13 @@ class _CitasScreenState extends State<CitasScreen> {
         return;
       }
 
+      if (_vehiculoSeleccionado == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Por favor selecciona un vehículo')),
+        );
+        return;
+      }
+
       try {
         final datos = await obtenerTokenYUsuario();
         final token = datos['token']!;
@@ -76,10 +109,10 @@ class _CitasScreenState extends State<CitasScreen> {
         final nuevaCita = {
           'descripcion': _descripcionController.text,
           'fechaHoraCita': _fechaHoraCita!.toIso8601String().split('.').first,
-          'estado': 'PENDIENTE', // Estado por defecto
+          'estado': 'PENDIENTE',
           'solucion': _solucionController.text,
           'usuario': {'id': userId},
-          'vehiculo': {'id': int.parse(_vehiculoIdController.text)},
+          'vehiculo': {'id': _vehiculoSeleccionado!['id']},
           'taller': {'id': widget.tallerId},
         };
 
@@ -146,16 +179,26 @@ class _CitasScreenState extends State<CitasScreen> {
                 ),
               ),
               const SizedBox(height: 12),
-              TextFormField(
-                controller: _vehiculoIdController,
-                decoration: const InputDecoration(labelText: 'ID del Vehículo'),
+              DropdownButtonFormField<Map<String, dynamic>>(
+                decoration: const InputDecoration(
+                  labelText: 'Selecciona un vehículo',
+                ),
+                items:
+                    _vehiculosUsuario.map((vehiculo) {
+                      final descripcion =
+                          "${vehiculo['marca']} (${vehiculo['matricula']})";
+                      return DropdownMenuItem<Map<String, dynamic>>(
+                        value: vehiculo,
+                        child: Text(descripcion),
+                      );
+                    }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _vehiculoSeleccionado = value;
+                  });
+                },
                 validator:
-                    (value) => value!.isEmpty ? 'Campo obligatorio' : null,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                'Taller ID: ${widget.tallerId}',
-                style: const TextStyle(color: Colors.grey),
+                    (value) => value == null ? 'Selecciona un vehículo' : null,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
