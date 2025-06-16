@@ -15,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> _citas = [];
   bool _cargando = true;
   DateTime? _selectedDate;
-  final TextEditingController _descripcionController = TextEditingController();
 
   @override
   void initState() {
@@ -30,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _usuario = response['usuario'];
       });
 
-      final citas = await CitaService.obtenerCitasDeUsuario(_usuario!['id']);
+      final citas = await CitaService.obtenerCitasPorUsuarioActual();
       print("CITAS CARGADAS:");
       print(citas);
 

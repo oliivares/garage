@@ -14,7 +14,7 @@ class UsuarioSearchService {
 
   Future<List<String>> buscarUsuariosPorNombreUsuario(String texto) async {
     final prefs = await SharedPreferences.getInstance();
-    final usuarioActual = prefs.getString('nombreUsuario');
+    prefs.getString('nombreUsuario');
 
     final uri = Uri.parse(
       "$url/usuario/buscar-por-nombre-usuario?texto=$texto",

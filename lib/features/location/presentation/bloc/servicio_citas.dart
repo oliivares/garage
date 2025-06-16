@@ -33,6 +33,40 @@ class CitaService {
     }
   }
 
+  static Future<List<Map<String, dynamic>>>
+  obtenerCitasPorUsuarioActual() async {
+    final url = Uri.parse('${StaticData.baseUrl}/cita/usuario/actual');
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+
+      if (token == null) {
+        print("🔒 Token no disponible");
+        return [];
+      }
+
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      print("🔍 GET $url");
+      print("📦 Status: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonList = jsonDecode(response.body);
+        return jsonList.cast<Map<String, dynamic>>();
+      } else {
+        print("❌ Error ${response.statusCode}: ${response.body}");
+        return [];
+      }
+    } catch (e) {
+      print("💥 Error en la solicitud: ${e.runtimeType} - $e");
+      return [];
+    }
+  }
+
   static Future<List<Map<String, dynamic>>> obtenerCitasDeUsuario(
     int userId,
   ) async {
